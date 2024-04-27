@@ -10,9 +10,9 @@ export default function Chevron({
 }: ChevronProps) {
   const rotationAngle =
     direction === "up"
-      ? 270
+      ? 90
       : direction === "down"
-        ? 90
+        ? 270
         : direction === "right"
           ? 180
           : 0;

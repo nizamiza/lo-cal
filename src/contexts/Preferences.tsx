@@ -1,8 +1,14 @@
-import { createContext, useContext, useState, PropsWithChildren } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  PropsWithChildren,
+} from "react";
 import { noop } from "@/shared/utils";
 
 type PreferenceMap = {
-  "color-scheme": "light" | "dark";
+  "base-color": string;
   "view-mode": "day" | "week" | "month";
   timezone: string;
   "last-viewed-date": string;
@@ -18,11 +24,12 @@ type PreferenceMap = {
 };
 
 const DEFAULT_PREFERENCES: PreferenceMap = {
+  "base-color": "hotpink",
   "color-scheme": "light",
   "view-mode": "month",
   timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   "last-viewed-date": new Date().toISOString(),
-  "first-day-of-week": 0,
+  "first-day-of-week": 1,
   "date-time-format": {
     year: "numeric",
     month: "long",
@@ -94,6 +101,10 @@ function resetLocalPreference(key: PreferenceKey): PreferenceMap {
   return setLocalPreference(key, DEFAULT_PREFERENCES[key]);
 }
 
+function setBaseColor(color: string): void {
+  document.documentElement.style.setProperty("--base-color", color);
+}
+
 export default function PreferencesProvider({ children }: PropsWithChildren) {
   const [preferences, setPreferences] = useState(() => {
     return getLocalPreferences();
@@ -101,6 +112,10 @@ export default function PreferencesProvider({ children }: PropsWithChildren) {
 
   const setPreference: SetPreference = (key, value) => {
     setPreferences(() => {
+      if (key === "base-color") {
+        setBaseColor(value);
+      }
+
       return setLocalPreference(key, value);
     });
   };
@@ -110,6 +125,10 @@ export default function PreferencesProvider({ children }: PropsWithChildren) {
       return resetLocalPreference(key);
     });
   };
+
+  useEffect(() => {
+    setBaseColor(preferences["base-color"]);
+  }, []);
 
   return (
     <PreferencesContext.Provider

@@ -13,4 +13,87 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --base-color: hotpink;
+  background-color: color-mix(in oklab, var(--base-color), white 98%);
+
+  @media (prefers-color-scheme: dark) {
+    background-color: color-mix(in oklab, var(--base-color), black 90%);
+  }
+}
+
+*,
+*::before,
+*::after {
+  --color-mix-space: oklab;
+  --text-color-mix: black 60%;
+  --surface-color-mix: white 85%;
+  --border-color-mix: black 40%;
+
+  --text: color-mix(
+    in var(--color-mix-space),
+    var(--base-color),
+    var(--text-color-mix)
+  );
+  --surface: color-mix(
+    in var(--color-mix-space),
+    var(--base-color),
+    var(--surface-color-mix)
+  );
+  --border: color-mix(
+    in var(--color-mix-space),
+    var(--base-color),
+    var(--border-color-mix)
+  );
+
+  --surface-alpha: 1;
+  --text-alpha: 1;
+  --border-alpha: 0.5;
+
+  --text-mix-transparency: calc(100% - var(--text-alpha) * 100%);
+  --surface-mix-transparency: calc(100% - var(--surface-alpha) * 100%);
+  --border-mix-transparency: calc(100% - var(--border-alpha) * 100%);
+
+  --text-mix: color-mix(
+    in srgb,
+    var(--text),
+    transparent var(--text-mix-transparency)
+  );
+  --surface-mix: color-mix(
+    in srgb,
+    var(--surface),
+    transparent var(--surface-mix-transparency)
+  );
+  --border-mix: color-mix(
+    in srgb,
+    var(--border),
+    transparent var(--border-mix-transparency)
+  );
+
+  color: var(--text-mix);
+  border-color: var(--border-mix);
+
+  &.surface {
+    background-color: var(--surface-mix);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    --text-color-mix: white 40%;
+    --surface-color-mix: black 72%;
+    --border-color-mix: black 30%;
+  }
+}
+
+@layer components {
+  .separator {
+    --thickness: 2px;
+
+    display: inline-block;
+    width: var(--thickness);
+    height: 100%;
+    border-radius: 100vw;
+    color: color-mix(in srgb, currentColor, transparent 85%);
+    background-color: currentColor;
+    border: 0;
+  }
 }
