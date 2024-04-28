@@ -14,9 +14,12 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  --day-min-height: calc(80vh - 4rem);
+
   --base-color: hotpink;
   --base-dark: color-mix(in oklab, var(--base-color), black 30%);
   --base-light: color-mix(in oklab, var(--base-color), white 30%);
+
   background-color: color-mix(in oklab, var(--base-color), white 98%);
 
   @media (prefers-color-scheme: dark) {

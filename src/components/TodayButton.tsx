@@ -13,6 +13,7 @@ export default function TodayButton({ className, ...props }: TodayButtonProps) {
 
   return (
     <button
+      title="Go to today"
       className={twMerge("btn surface text-sm sm:text-base", className)}
       {...props}
       onClick={handleClick}

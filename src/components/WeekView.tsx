@@ -1,42 +1,49 @@
-import { usePreference } from "@/contexts/Preferences";
 import WeekDaysHeader from "@/components/WeekDaysHeader";
 import useWeekDays, { getWeekDay } from "@/hooks/useWeekDays";
-import EventDayListItem from "@/components/EventDayListItem";
+import CalendarDay from "@/components/CalendarDay";
 import useWeekNumber from "@/hooks/useWeekNumber";
+import useCalendarViewModel from "@/hooks/useCalendarViewModel";
 
 export default function WeekView() {
-  const [lastViewedDate] = usePreference("last-viewed-date");
+  const [{ date, year, month }, getEventsOnDate] = useCalendarViewModel();
   const weekDays = useWeekDays();
 
-  const currentDate = new Date(lastViewedDate);
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth();
+  const daysToFirstDayOfWeek = weekDays.indexOf(getWeekDay(date));
+  const weekNumber = useWeekNumber(date);
 
-  const daysToFrstDayOfWeek = weekDays.indexOf(getWeekDay(currentDate));
-  const weekNumber = useWeekNumber(lastViewedDate);
+  const eventDates = useMemo(() => {
+    return Array.from({ length: weekDays.length }, (_, i) => {
+      const date = new Date(
+        year,
+        currentMonth,
+        currentDate.getDate() - daysToFirstDayOfWeek + i
+      );
+
+      const eventsOnDate = getEventsOnDate(date);
+
+      return {
+        date,
+        events: eventsOnDate,
+      };
+    });
+  }, [year, month, daysToFirstDayOfWeek, getEventsOnDate]);
 
   return (
     <div className="grid gap-4">
       <WeekDaysHeader />
-      <section className="grid min-h-[calc(80vh-4rem)]">
+      <section className="grid min-h-[--day-min-height]">
         <h2 className="sr-only">Week {weekNumber}</h2>
-        <ul className="grid grid-cols-7 gap-1 sm:gap-2">
-          {Array.from(
-            { length: 7 },
-            (_, i) =>
-              new Date(
-                currentYear,
-                currentMonth,
-                currentDate.getDate() - daysToFrstDayOfWeek + i,
-              ),
-          ).map((date) => (
-            <EventDayListItem
-              key={`week-view-${date.toISOString()}`}
-              className="aspect-auto"
-              date={date}
-            />
+        <ol className="grid grid-cols-7 gap-1 sm:gap-2">
+          {eventDates.map(({ date, events }) => (
+            <li key={`week-view-${date.toISOString()}`}>
+              <CalendarDay
+                className="aspect-auto"
+                date={date}
+                events={events}
+              />
+            </li>
           ))}
-        </ul>
+        </ol>
       </section>
     </div>
   );

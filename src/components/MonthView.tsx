@@ -1,38 +1,47 @@
-import { usePreference } from "@/contexts/Preferences";
+import { useMemo } from "react";
 import WeekDaysHeader from "@/components/WeekDaysHeader";
-import EventDayListItem from "@/components/EventDayListItem";
+import CalendarDay from "@/components/CalendarDay";
+import useCalendarViewModel from "@/hooks/useCalendarViewModel";
 
 function getDaysInMonth(year: number, month: number) {
   return new Date(year, month + 1, 0).getDate();
 }
 
 export default function MonthView() {
-  const [lastVisitedDate] = usePreference("last-viewed-date");
+  const [{ date, year, month }, getEventsOnDate] = useCalendarViewModel();
 
-  const currentDate = new Date(lastVisitedDate);
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth();
+  const daysInMonth = useMemo(() => getDaysInMonth(year, month), [year, month]);
 
-  const daysInMonth = getDaysInMonth(currentYear, currentMonth);
+  const eventDates = useMemo(() => {
+    return Array.from({ length: daysInMonth }, (_, i) => {
+      const date = new Date(year, month, i + 1);
+      const eventsOnDate = getEventsOnDate(date);
 
-  const heading = `Days of ${Intl.DateTimeFormat("en-US", { month: "long" }).format(currentDate)} ${currentYear}`;
+      return {
+        date,
+        events: eventsOnDate,
+      };
+    });
+  }, [year, month, daysInMonth, getEventsOnDate]);
+
+  const heading = useMemo(
+    () =>
+      `Days of ${Intl.DateTimeFormat("en-US", { month: "long" }).format(date)} ${year}`,
+    [date, year]
+  );
 
   return (
     <div className="grid gap-4">
       <WeekDaysHeader />
       <section>
         <h2 className="sr-only">{heading}</h2>
-        <ul className="grid grid-cols-7 gap-1 sm:gap-2">
-          {Array.from(
-            { length: daysInMonth },
-            (_, i) => new Date(currentYear, currentMonth, i + 1),
-          ).map((date) => (
-            <EventDayListItem
-              key={`month-view-${date.toISOString()}`}
-              date={date}
-            />
+        <ol className="grid grid-cols-7 gap-1 sm:gap-2">
+          {eventDates.map(({ date, events }) => (
+            <li key={`month-view-${date.toISOString()}`}>
+              <CalendarDay date={date} events={events} />
+            </li>
           ))}
-        </ul>
+        </ol>
       </section>
     </div>
   );

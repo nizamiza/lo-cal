@@ -7,5 +7,3 @@ export type Event = {
   end: string;
   url?: string;
 };
-
-export type EventFilter = Partial<Event>;

@@ -35,6 +35,7 @@ export default function DateControls() {
         viewMode === "day"
           ? {
               day: "numeric",
+              month: "long",
             }
           : viewMode === "week"
             ? {
@@ -43,9 +44,9 @@ export default function DateControls() {
             : {
                 month: "long",
                 year: "numeric",
-              },
+              }
       ).format(new Date(lastViewedDate)),
-    [lastViewedDate, viewMode],
+    [lastViewedDate, viewMode]
   );
 
   return (
