@@ -1,9 +1,8 @@
-import { Fragment } from "react";
 import { usePreference } from "@/contexts/Preferences";
 import WeekDaysHeader from "@/components/WeekDaysHeader";
 import EventDayListItem from "@/components/EventDayListItem";
 
-function getDaysInMonth(year, month) {
+function getDaysInMonth(year: number, month: number) {
   return new Date(year, month + 1, 0).getDate();
 }
 
@@ -26,7 +25,7 @@ export default function MonthView() {
         <ul className="grid grid-cols-7 gap-1 sm:gap-2">
           {Array.from(
             { length: daysInMonth },
-            (_, i) => new Date(currentYear, currentMonth, i + 1)
+            (_, i) => new Date(currentYear, currentMonth, i + 1),
           ).map((date) => (
             <EventDayListItem
               key={`month-view-${date.toISOString()}`}

@@ -6,7 +6,6 @@ import useWeekNumber from "@/hooks/useWeekNumber";
 
 export default function WeekView() {
   const [lastViewedDate] = usePreference("last-viewed-date");
-  const [firstDayOfWeek] = usePreference("first-day-of-week");
   const weekDays = useWeekDays();
 
   const currentDate = new Date(lastViewedDate);
@@ -28,8 +27,8 @@ export default function WeekView() {
               new Date(
                 currentYear,
                 currentMonth,
-                currentDate.getDate() - daysToFrstDayOfWeek + i
-              )
+                currentDate.getDate() - daysToFrstDayOfWeek + i,
+              ),
           ).map((date) => (
             <EventDayListItem
               key={`week-view-${date.toISOString()}`}

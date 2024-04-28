@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 import Close from "@/icons/close";
 
 type ModalProps = HTMLAttributes<HTMLDialogElement> & {
+  open?: boolean;
   actions?: ReactNode;
   onClose?: () => void;
 };

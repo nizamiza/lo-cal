@@ -7,9 +7,11 @@ import {
 } from "react";
 import { noop } from "@/shared/utils";
 
+export type ViewMode = "day" | "week" | "month";
+
 type PreferenceMap = {
   "base-color": string;
-  "view-mode": "day" | "week" | "month";
+  "view-mode": ViewMode;
   timezone: string;
   "last-viewed-date": string;
   "first-day-of-week": 0 | 1 | 2 | 3 | 4 | 5 | 6;
@@ -25,7 +27,6 @@ type PreferenceMap = {
 
 const DEFAULT_PREFERENCES: PreferenceMap = {
   "base-color": "hotpink",
-  "color-scheme": "light",
   "view-mode": "month",
   timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   "last-viewed-date": new Date().toISOString(),
@@ -45,11 +46,11 @@ const LOCAL_STORAGE_KEY = "preferences";
 type PreferenceKey = keyof PreferenceMap;
 type SetPreference = <const K extends PreferenceKey>(
   key: K,
-  value: PreferenceMap[K]
+  value: PreferenceMap[K],
 ) => void;
 
 type SetSpecificPreference<K extends PreferenceKey> = (
-  value: PreferenceMap[K]
+  value: PreferenceMap[K],
 ) => void;
 
 type PreferencesContextType = {
@@ -69,7 +70,7 @@ export function usePreferences(): PreferencesContextType {
 }
 
 export function usePreference<const K extends PreferenceKey>(
-  key: K
+  key: K,
 ): [PreferenceMap[K], SetSpecificPreference<K>] {
   const { preferences, setPreference } = usePreferences();
   return [preferences[key], (value) => setPreference(key, value)];
@@ -77,7 +78,7 @@ export function usePreference<const K extends PreferenceKey>(
 
 function getLocalPreferences(override?: Partial<PreferenceMap>): PreferenceMap {
   const storedPreferences = JSON.parse(
-    localStorage.getItem(LOCAL_STORAGE_KEY) || "{}"
+    localStorage.getItem(LOCAL_STORAGE_KEY) || "{}",
   );
 
   return {
@@ -89,7 +90,7 @@ function getLocalPreferences(override?: Partial<PreferenceMap>): PreferenceMap {
 
 function setLocalPreference<const K extends PreferenceKey>(
   key: K,
-  value: PreferenceMap[K]
+  value: PreferenceMap[K],
 ): PreferenceMap {
   const newPreferences = getLocalPreferences({ [key]: value });
 
@@ -113,7 +114,7 @@ export default function PreferencesProvider({ children }: PropsWithChildren) {
   const setPreference: SetPreference = (key, value) => {
     setPreferences(() => {
       if (key === "base-color") {
-        setBaseColor(value);
+        setBaseColor(value as string);
       }
 
       return setLocalPreference(key, value);
@@ -128,6 +129,7 @@ export default function PreferencesProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     setBaseColor(preferences["base-color"]);
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, []);
 
   return (

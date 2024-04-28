@@ -159,7 +159,6 @@
     --px: 1em;
     --py: 0.5em;
     --br: 0.75em;
-    --fs: 1rem;
     --gap: 0.5em;
     --base-color: var(--base-dark);
 
@@ -169,17 +168,9 @@
     gap: var(--gap);
     padding: var(--py) var(--px);
     border-radius: var(--br);
-    font-size: var(--fs);
+    font-size: inherit;
     font-weight: 500;
     line-height: 1;
-
-    &.xs {
-      --fs: 0.75rem;
-    }
-
-    &.sm {
-      --fs: 0.875rem;
-    }
   }
 
   .modal[open] {

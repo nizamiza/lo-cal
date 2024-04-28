@@ -9,7 +9,12 @@ function App() {
     <Preferences>
       <IntlHelpers>
         <StatusMessages>
-          <main className="min-h-screen flex flex-col justify-between px-4 pt-4 pb-8 gap-6">
+          <main
+            className={`
+              min-h-screen flex flex-col justify-start px-4 pt-4 pb-8 gap-6
+              max-w-[86rem] mx-auto
+            `}
+          >
             <Calendar />
           </main>
           <StatusMessageList />

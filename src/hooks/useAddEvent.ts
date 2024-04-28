@@ -14,7 +14,7 @@ export default function useAddEvent() {
         content: "Event added successfully.",
       });
     } catch (error) {
-      logError(error, (error) => {
+      logError(error, () => {
         addMessage({
           type: "error",
           content: "Failed to add event.",

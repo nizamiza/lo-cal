@@ -5,16 +5,17 @@ import CalendarIcon from "@/icons/calendar";
 
 type InputAttributes = HTMLAttributes<HTMLInputElement>;
 
-type FormFieldProps = Pick<
-  InputAttributes,
-  "type" | "inputMode" | "defaultValue" | "required"
-> & {
+type FormFieldProps = {
   className?: string;
   element?: "input" | "textarea";
   label: string;
   id: string;
   rows?: number;
   placeholder?: string;
+  required?: boolean;
+  defaultValue?: string;
+  type?: string;
+  inputMode?: InputAttributes["inputMode"];
 };
 
 export default function FormField({
@@ -25,7 +26,7 @@ export default function FormField({
   required,
   defaultValue,
   placeholder,
-  type,
+  type = "text",
   inputMode,
   rows = 7,
 }: FormFieldProps) {

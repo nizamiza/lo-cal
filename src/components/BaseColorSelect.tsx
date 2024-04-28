@@ -22,8 +22,8 @@ export default function BaseColorSelect() {
   return (
     <Select
       className="[&_select]:capitalize"
-      onChange={(e) => seBaseColor(e.target.value)}
-      value={baseColor}
+      onChange={(e) => seBaseColor((e.target as HTMLSelectElement).value)}
+      defaultValue={baseColor}
       label="Select a base color"
       id="base-color-select"
       sr-only-label

@@ -28,10 +28,10 @@ async function initDB(): Promise<IDBDatabase> {
   return db;
 }
 
-function wrapTransaction<T>(tx: IDBTransaction): Promise<T> {
+function wrapTransaction(tx: IDBTransaction): Promise<unknown> {
   return new Promise((resolve, reject) => {
     tx.onerror = () => reject(tx.error);
-    tx.oncomplete = () => resolve();
+    tx.oncomplete = () => resolve("Transaction complete.");
   });
 }
 
@@ -42,7 +42,7 @@ function wrapRequest<T>(request: IDBRequest<T>): Promise<T> {
   });
 }
 
-export async function addEvent(event: Event): Promise<number> {
+export async function addEvent(event: Event): Promise<IDBValidKey> {
   const db = await initDB();
 
   const tx = db.transaction(Store.events, "readwrite");
@@ -54,7 +54,7 @@ export async function addEvent(event: Event): Promise<number> {
   return id;
 }
 
-export async function getEvent(id: number): Promise<Event | undefined> {
+export async function getEvent(id: IDBValidKey): Promise<Event | undefined> {
   const db = await initDB();
 
   const tx = db.transaction(Store.events, "readonly");
@@ -78,7 +78,10 @@ export async function getEvents(): Promise<Event[]> {
   return events;
 }
 
-export async function updateEvent(id: number, event: Event): Promise<void> {
+export async function updateEvent(
+  id: IDBValidKey,
+  event: Event,
+): Promise<void> {
   const db = await initDB();
 
   const tx = db.transaction(Store.events, "readwrite");
@@ -88,7 +91,7 @@ export async function updateEvent(id: number, event: Event): Promise<void> {
   await wrapTransaction(tx);
 }
 
-export async function deleteEvent(id: number): Promise<void> {
+export async function deleteEvent(id: IDBValidKey): Promise<void> {
   const db = await initDB();
 
   const tx = db.transaction(Store.events, "readwrite");

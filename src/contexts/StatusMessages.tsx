@@ -24,6 +24,7 @@ type StatusMessagesContextType = {
   messages: StatusMessage[];
   addMessage: (message: StatusMessage) => void;
   removeMessage: (index: number) => void;
+  removeAll: () => void;
 };
 
 const StatusMessagesContext = createContext<StatusMessagesContextType>({
@@ -53,7 +54,7 @@ export default function StatusMessagesProvider({
           return state;
       }
     },
-    []
+    [],
   );
 
   const removeMessage = (index: number) => {

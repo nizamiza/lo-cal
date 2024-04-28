@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, FormEvent } from "react";
 import { Event as CalendarEvent } from "@/event/types";
 import useAddEvent from "@/hooks/useAddEvent";
 import useDeleteEvent from "@/hooks/useDeleteEvent";
@@ -29,7 +29,7 @@ export default function EventModal({
   const updateEvent = useUpdateEvent();
   const deleteEvent = useDeleteEvent();
 
-  const handleSubmit = async (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
@@ -45,11 +45,12 @@ export default function EventModal({
         ...data,
         [key]: getFormDataStringValue(formData, key),
       }),
-      {}
+      {} as CalendarEvent,
     );
 
     const startDate = new Date(calendarEvent.start);
     const endDate = new Date(startDate);
+
     endDate.setHours(startDate.getHours() + 0.5);
 
     calendarEvent.end = endDate.toISOString();

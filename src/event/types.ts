@@ -3,8 +3,8 @@ export type Event = {
   summary: string;
   description?: string;
   location?: string;
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
   url?: string;
 };
 
