@@ -9,7 +9,7 @@ enum Store {
 
 let db: IDBDatabase;
 
-export function initDB(): Promise<IDBDatabase> {
+async function initDB(): Promise<IDBDatabase> {
   if (db) {
     return Promise.resolve(db);
   }
@@ -78,13 +78,13 @@ export async function getEvents(): Promise<Event[]> {
   return events;
 }
 
-export async function updateEvent(event: Event): Promise<void> {
+export async function updateEvent(id: number, event: Event): Promise<void> {
   const db = await initDB();
 
   const tx = db.transaction(Store.events, "readwrite");
   const store = tx.objectStore(Store.events);
 
-  await wrapRequest(store.put(event));
+  await wrapRequest(store.put(event, id));
   await wrapTransaction(tx);
 }
 

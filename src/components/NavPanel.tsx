@@ -1,9 +1,11 @@
 import { useMemo } from "react";
 import Chevron from "@/icons/chevron";
 import Plus from "@/icons/plus";
-import { usePreference } from "@/contexts/Preferences";
 import BaseColorSelect from "@/components/BaseColorSelect";
 import ViewModeSelect from "@/components/ViewModeSelect";
+import TodayButton from "@/components/TodayButton";
+import { useEventModalContext } from "@/contexts/EventModalContext";
+import { usePreference } from "@/contexts/Preferences";
 import useWeekNumber from "@/hooks/useWeekNumber";
 
 export default function NavPanel() {
@@ -11,11 +13,12 @@ export default function NavPanel() {
   const [viewMode, setViewMode] = usePreference("view-mode");
   const weekNumber = useWeekNumber(lastViewedDate);
 
+  const { openModal } = useEventModalContext();
+
   const handleDateChange = (direction: "previous" | "next") => {
     const date = new Date(lastViewedDate);
     const coefficient = direction === "previous" ? -1 : 1;
 
-    console.log(lastViewedDate);
     switch (viewMode) {
       case "day":
         date.setDate(date.getDate() + 1 * coefficient);
@@ -61,6 +64,7 @@ export default function NavPanel() {
         p-4 sm:px-6 rounded-full backdrop-blur-md
       `}
     >
+      <TodayButton />
       <ViewModeSelect />
       <BaseColorSelect />
       <button
@@ -80,7 +84,7 @@ export default function NavPanel() {
         <Chevron direction="right" />
       </button>
       <hr className="separator h-[1lh]" />
-      <button title="Create new event">
+      <button title="Add new event" onClick={openModal}>
         <Plus />
       </button>
     </nav>

@@ -1,4 +1,5 @@
 export type Event = {
+  completed?: boolean;
   summary: string;
   description?: string;
   location?: string;

@@ -15,6 +15,8 @@
   -moz-osx-font-smoothing: grayscale;
 
   --base-color: hotpink;
+  --base-dark: color-mix(in oklab, var(--base-color), black 30%);
+  --base-light: color-mix(in oklab, var(--base-color), white 30%);
   background-color: color-mix(in oklab, var(--base-color), white 98%);
 
   @media (prefers-color-scheme: dark) {
@@ -73,6 +75,15 @@
   color: var(--text-mix);
   border-color: var(--border-mix);
 
+  &:focus-visible {
+    --border-alpha: 1;
+
+    outline: 0;
+    box-shadow:
+      0 0 0 1.5px var(--border-mix),
+      4px 4px 0 0 var(--border-mix);
+  }
+
   &.surface {
     background-color: var(--surface-mix);
   }
@@ -81,6 +92,42 @@
     --text-color-mix: white 40%;
     --surface-color-mix: black 72%;
     --border-color-mix: black 30%;
+  }
+}
+
+@layer base {
+  h1,
+  .h1 {
+    @apply text-3xl sm:text-4xl font-bold;
+  }
+
+  h2,
+  .h2 {
+    @apply text-2xl sm:text-3xl font-semibold;
+  }
+
+  h3,
+  .h3 {
+    @apply text-xl sm:text-2xl font-semibold;
+  }
+
+  h4,
+  .h4 {
+    @apply text-lg sm:text-xl font-semibold;
+  }
+
+  h5,
+  .h5 {
+    @apply text-base sm:text-lg font-semibold;
+  }
+
+  h6,
+  .h6 {
+    @apply text-sm sm:text-base font-semibold;
+  }
+
+  button {
+    border-radius: 0.75em;
   }
 }
 
@@ -95,5 +142,162 @@
     color: color-mix(in srgb, currentColor, transparent 85%);
     background-color: currentColor;
     border: 0;
+
+    &.horizontal {
+      width: 100%;
+      max-width: 20ch;
+      height: var(--thickness);
+    }
+  }
+
+  .date-note {
+    --text-alpha: 0.5;
+    @apply text-xs sm:text-sm uppercase font-semibold;
+  }
+
+  .btn {
+    --px: 1em;
+    --py: 0.5em;
+    --br: 0.75em;
+    --fs: 1rem;
+    --gap: 0.5em;
+    --base-color: var(--base-dark);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--gap);
+    padding: var(--py) var(--px);
+    border-radius: var(--br);
+    font-size: var(--fs);
+    font-weight: 500;
+    line-height: 1;
+
+    &.xs {
+      --fs: 0.75rem;
+    }
+
+    &.sm {
+      --fs: 0.875rem;
+    }
+  }
+
+  .modal[open] {
+    --br: 1rem;
+    --px: 1rem;
+    --py: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+    inset: auto 0 0 0;
+    border-top-left-radius: var(--br);
+    border-top-right-radius: var(--br);
+
+    & > header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      padding: var(--py) var(--px);
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(1rem);
+    }
+
+    & > footer {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      padding: var(--py) var(--px);
+      position: sticky;
+      bottom: 0;
+      backdrop-filter: blur(1rem);
+    }
+
+    & > hr {
+      align-self: center;
+    }
+
+    & > .modal-content {
+      padding: var(--py) var(--px);
+    }
+
+    &::backdrop {
+      background-color: color-mix(
+        in srgb,
+        color-mix(in oklab, var(--base-color), black 70%),
+        transparent 40%
+      );
+    }
+
+    @media (min-width: 640px) {
+      --offset: 1rem;
+      inset: var(--offset);
+      max-width: calc(100% - 2 * var(--offset));
+      min-width: 48ch;
+      width: fit-content;
+      border-bottom-left-radius: var(--br);
+      border-bottom-right-radius: var(--br);
+      margin: auto;
+    }
+  }
+
+  .form {
+    --gap: 1rem;
+
+    display: grid;
+    gap: var(--gap);
+  }
+
+  .form-field {
+    --gap: 0.25rem;
+    --br: 0.5rem;
+    --px: 0.5rem;
+    --py: 0.25rem;
+
+    display: grid;
+    gap: var(--gap);
+
+    & :is(input, textarea, select) {
+      --surface-color-mix: white 95%;
+
+      appearance: none;
+      width: 100%;
+      min-width: 0;
+      min-height: 2em;
+      height: 100%;
+      border-radius: var(--br);
+      padding: var(--py) var(--px);
+      background-color: var(--surface-mix);
+      color: var(--text-mix);
+
+      /* Safari */
+      &::-webkit-datetime-edit {
+        opacity: 0;
+      }
+
+      /* Chrome */
+      &::-webkit-calendar-picker-indicator {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+      }
+
+      /* Firefox */
+      &::-webkit-input-placeholder {
+        opacity: 0;
+      }
+    }
+
+    & > :is(textarea) {
+      resize: vertical;
+    }
   }
 }

@@ -10,25 +10,30 @@ export default function EventDayListItem({
   date,
 }: EventDayListItemProps) {
   const dayNumber = date.getDate();
+  const isToday = new Date().toDateString() === date.toDateString();
 
   return (
     <li
       className={twMerge(
         `
-          surface [--surface-alpha:0.35]
+          surface
+          ${isToday ? "[--base-color:var(--base-dark)]" : "[--surface-alpha:0.35]"}
           flex flex-col justify-start items-start 
           p-1 sm:p-2 aspect-square rounded-xl
         `,
         className
       )}
     >
-      <span className="flex flex-row items-center justify-between w-full gap-2">
-        <span className="text-xs sm:text-sm">{dayNumber}</span>
+      <span className="flex flex-row items-center justify-between w-full gap-1">
+        <span className={`text-xs sm:text-sm ${isToday ? "font-bold" : ""}`}>
+          {dayNumber}
+        </span>
         {dayNumber === 1 && (
-          <span className="text-xs sm:text-sm [--text-alpha:0.5] uppercase font-semibold">
+          <span className="date-note">
             {date.toLocaleString("default", { month: "short" })}
           </span>
         )}
+        {isToday && <span className="date-note">Today</span>}
       </span>
     </li>
   );
