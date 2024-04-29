@@ -186,7 +186,7 @@ export default function Settings({ className }: SettingsProps) {
           <>
             <button
               type="button"
-              className="btn border-[1.5px]"
+              className="btn bordered"
               onClick={handleReset}
             >
               Reset
@@ -200,7 +200,7 @@ export default function Settings({ className }: SettingsProps) {
             </button>
             <button
               type="button"
-              className="btn border-[1.5px]"
+              className="btn bordered"
               onClick={() => setIsOpen(false)}
             >
               Cancel

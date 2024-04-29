@@ -15,7 +15,7 @@ export default function WeekView() {
           "grid-cols-[1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)]",
           "md:grid-cols-[1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr]"
         )}
-        separatorClassName="[&:nth-of-type(4)]:opacity-0 md:[&:nth-of-type(4)]:opacity-1"
+        separatorClassName="[&:nth-of-type(4)]:opacity-0 md:[&:nth-of-type(4)]:opacity-100"
       />
       <section className="grid md:min-h-[--day-min-height]">
         <h2 className="sr-only">Week {weekNumber}</h2>

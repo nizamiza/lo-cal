@@ -34,7 +34,7 @@ export default function CalendarDay({
     <div
       onClick={handleClick}
       className={cn(
-        "surface @container",
+        "surface @container dark:border-[1.5px] dark:[--border-alpha:0.15]",
         viewMode !== "day" ? "cursor-pointer" : "",
         isToday
           ? "[--base-color:var(--base-dark)] [--surface-alpha:0.5]"

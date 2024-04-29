@@ -126,7 +126,7 @@ export default function EventModal({ event, open, onClose }: EventModalProps) {
           <>
             {id && (
               <button
-                className="btn border-[1.5px]"
+                className="btn bordered"
                 aria-label="Delete the event"
                 type="button"
                 onClick={() => setIsDeleting(true)}
@@ -142,11 +142,7 @@ export default function EventModal({ event, open, onClose }: EventModalProps) {
               {id ? "Update" : "Add"}
             </button>
             {onClose && (
-              <button
-                className="btn border-[1.5px]"
-                type="button"
-                onClick={onClose}
-              >
+              <button className="btn bordered" type="button" onClick={onClose}>
                 Cancel
               </button>
             )}

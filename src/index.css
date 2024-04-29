@@ -15,6 +15,7 @@
   -moz-osx-font-smoothing: grayscale;
 
   --day-min-height: calc(80vh - 4rem);
+  --border-width: 1.5px;
 
   --base-color: hotpink;
   --base-dark: color-mix(in oklab, var(--base-color), black 30%);
@@ -84,12 +85,16 @@
 
     outline: 0;
     box-shadow:
-      0 0 0 1.5px var(--border-mix),
+      0 0 0 var(--border-width) var(--border-mix),
       4px 4px 0 0 var(--border-mix);
   }
 
   &.surface {
     background-color: var(--surface-mix);
+  }
+
+  &.bordered {
+    border-width: var(--border-width);
   }
 
   @media (prefers-color-scheme: dark) {
@@ -143,7 +148,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-    border-width: 1.5px;
+    border-width: var(--border-width);
     padding: 0.5rem 0.75rem 1rem;
     border-radius: 0.5rem;
 
@@ -185,8 +190,6 @@
     --gap: 0.5em;
     --base-color: var(--base-dark);
 
-    @apply dark:border-[1.5px];
-
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -196,6 +199,10 @@
     font-size: inherit;
     font-weight: 500;
     line-height: 1;
+
+    @media (prefers-color-scheme: dark) {
+      border-width: var(--border-width);
+    }
   }
 
   .modal[open] {
@@ -245,6 +252,7 @@
 
     & > .modal-content {
       display: flex;
+      gap: 1.25rem;
       flex-direction: column;
       padding: var(--py) var(--px);
     }
@@ -260,7 +268,7 @@
     @media (min-width: 640px) {
       --offset: 1rem;
       inset: var(--offset);
-      max-width: calc(100% - 2 * var(--offset));
+      max-width: min(calc(100% - 2 * var(--offset)), 64ch);
       min-width: 48ch;
       width: fit-content;
       border-bottom-left-radius: var(--br);
@@ -302,7 +310,7 @@
         height: 2em;
         padding: 0;
         margin-block: auto;
-        border-width: 1.5px;
+        border-width: var(--border-width);
       }
     }
 
