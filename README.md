@@ -1,30 +1,54 @@
-# React + TypeScript + Vite
+# lo-cal
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**lo-cal** is a simple calendar app that stores events and settings locally in
+the browser using the [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
+and [`indexedDB`](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) APIs.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+-   Add, edit, and delete events
+-   Change the calendar view between day, week, and month
+-   Change the first day of the week
+-   Change the main color theme
+-   Everything is stored locally!
 
-## Expanding the ESLint configuration
+## Caveats
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+-   Events are stored in the browser's `localStorage` and `indexedDB` APIs, so
+    they will not be synced across devices or browsers.
+-   You cannot share nor invite others to events. This is a personal calendar app
+    only for you.
 
-- Configure the top-level `parserOptions` property like this:
+> **Note:** This app is mainly made as a demo and for personal use.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
-    project: ["./tsconfig.json", "./tsconfig.node.json"],
-    tsconfigRootDir: __dirname,
-  },
-};
-```
+## Tech Stack
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+-   [React](https://react.dev)
+-   [TypeScript](https://typescriptlang.org)
+-   [Tailwind CSS](https://tailwindcss.com)
+-   [Vite](https://vitejs.dev)
+
+## Development
+
+1. Clone the repository:
+
+    ```sh
+    git clone https://github.com/nizamiza/lo-cal.git
+    ```
+
+2. Install the dependencies:
+
+    ```sh
+    cd lo-cal
+    bun install
+    ```
+
+3. Start the development server:
+
+    ```sh
+    bun run dev
+    ```
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
