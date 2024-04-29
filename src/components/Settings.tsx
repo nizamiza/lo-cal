@@ -91,7 +91,7 @@ const NestedSettingFieldProps = {
       dateStyle: {
         label: "Date style",
         element: "select",
-        options: ["full", "long", "medium", "short"].map((style) => ({
+        options: ["long", "medium", "short"].map((style) => ({
           value: style,
           label: style,
         })),
@@ -99,7 +99,7 @@ const NestedSettingFieldProps = {
       timeStyle: {
         label: "Time style",
         element: "select",
-        options: ["full", "long", "medium", "short"].map((style) => ({
+        options: ["long", "medium", "short"].map((style) => ({
           value: style,
           label: style,
         })),

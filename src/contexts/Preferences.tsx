@@ -112,6 +112,9 @@ function resetLocalPreferences(): PreferenceMap {
 
 function setBaseColor(color: string): void {
   document.documentElement.style.setProperty("--base-color", color);
+  document.head
+    .querySelector(`meta[name="theme-color"]`)
+    ?.setAttribute("content", color);
 }
 
 export default function PreferencesProvider({ children }: PropsWithChildren) {

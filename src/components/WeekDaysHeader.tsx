@@ -23,7 +23,7 @@ export default function WeekDaysHeader({
       )}
     >
       <h2 className="sr-only">Weekdays</h2>
-      <ol
+      <div
         className={cn(
           "[--g:_0.5rem]",
           "grid grid-cols-[1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr]",
@@ -33,19 +33,19 @@ export default function WeekDaysHeader({
       >
         {weekDays.map((day, index) => (
           <Fragment key={day}>
-            <li className="text-sm md:text-base lg:text-lg text-center">
+            <div className="text-sm md:text-base lg:text-lg text-center">
               <span aria-label={day} className="mx-auto">
                 <span>{day.charAt(0)}</span>
                 <span className="hidden sm:inline">{day.charAt(1)}</span>
                 <span className="hidden md:inline">{day.charAt(2)}</span>
               </span>
-            </li>
+            </div>
             {index < weekDays.length - 1 && (
               <hr className={cn("separator h-[1lh]", separatorClassName)} />
             )}
           </Fragment>
         ))}
-      </ol>
+      </div>
     </header>
   );
 }

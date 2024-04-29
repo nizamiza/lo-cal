@@ -22,9 +22,10 @@ export default function EventCard({ event }: EventCardProps) {
       onClick={handleClick}
       className={cn(
         "pointer-events-none @[8rem]:pointer-events-auto @[8rem]:cursor-pointer",
-        "[--base-color:var(--base-light)] @[8rem]:surface @[8rem]:shadow-md",
+        "surface [--base-color:var(--base-light)] @[8rem]:shadow-md",
+        "dark:@[8rem]:border-[1.5px]",
         "grid gap-1 @[8rem]:p-2 @xs:gap-2 @sm:gap-4",
-        "@[8rem]:rounded-sm @xs:rounded-md"
+        "rounded-md @xs:rounded-lg"
       )}
     >
       <h3

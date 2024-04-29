@@ -1,5 +1,6 @@
 import { HTMLAttributes, ChangeEvent } from "react";
 import LabelText from "@/components/LabelText";
+import useDateTimeFormatter from "@/hooks/useDateTimeFormatter";
 import CalendarIcon from "@/icons/calendar";
 import Chevron from "@/icons/chevron";
 import CheckIcon from "@/icons/check";
@@ -47,18 +48,26 @@ export default function FormField({
   rows = 7,
   options,
 }: FormFieldProps) {
-  const isFirefox =
-    typeof navigator !== "undefined" && navigator.userAgent.includes("Firefox");
+  const dateTimeFormatter = useDateTimeFormatter();
 
   const handleChange = (event: ChangeEvent) => {
     const target = event.target as HTMLInputElement;
     onChange?.(target.value, target.checked || false);
   };
 
+  const isDateType = type.startsWith("date");
+
   return (
     <div className={cn("form-field", className)}>
       <label htmlFor={id}>
-        <LabelText>{label}</LabelText>
+        <LabelText className="inline-flex items-center gap-2 flex-wrap">
+          {label}
+          {isDateType && value && (
+            <span className="text-xs">
+              ({dateTimeFormatter.format(new Date(value))})
+            </span>
+          )}
+        </LabelText>
       </label>
       {element === "input" ? (
         <span className="relative flex">
@@ -75,18 +84,6 @@ export default function FormField({
             value={value}
             checked={checked}
           />
-          {!isFirefox && (
-            <>
-              {type?.startsWith("date") && value && (
-                <span className="absolute top-1/2 left-2 -translate-y-1/2">
-                  {new Date(value).toLocaleDateString()}
-                </span>
-              )}
-              {type?.startsWith("date") && (
-                <CalendarIcon className="h-4 w-4 absolute top-1/2 right-4 -translate-y-1/2 pointer-events-none" />
-              )}
-            </>
-          )}
           {type === "checkbox" && value && (
             <CheckIcon className="absolute top-1 left-1 pointer-events-none" />
           )}

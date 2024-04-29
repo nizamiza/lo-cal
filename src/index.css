@@ -20,6 +20,7 @@
   --base-dark: color-mix(in oklab, var(--base-color), black 30%);
   --base-light: color-mix(in oklab, var(--base-color), white 30%);
 
+  accent-color: var(--base-color);
   background-color: color-mix(in oklab, var(--base-color), white 98%);
 
   @media (prefers-color-scheme: dark) {
@@ -173,7 +174,7 @@
   }
 
   .date-note {
-    --text-alpha: 0.5;
+    --text-alpha: 0.8;
     @apply text-xs sm:text-sm uppercase font-semibold;
   }
 
@@ -183,6 +184,8 @@
     --br: 0.75em;
     --gap: 0.5em;
     --base-color: var(--base-dark);
+
+    @apply dark:border-[1.5px];
 
     display: inline-flex;
     align-items: center;
@@ -267,44 +270,30 @@
   }
 
   .form-field {
-    --gap: 0.25rem;
-    --br: 0.5rem;
-    --px: 0.5rem;
-    --py: 0.25rem;
-
     display: grid;
-    gap: var(--gap);
+    gap: 0.25rem;
 
     & :is(input, textarea, select) {
       --surface-color-mix: white 95%;
+
+      @apply px-3 py-2 rounded-md md:rounded-lg;
 
       appearance: none;
       width: 100%;
       min-width: 0;
       min-height: 2em;
       height: 100%;
-      border-radius: var(--br);
-      padding: var(--py) var(--px);
+      line-height: 1.5;
       background-color: var(--surface-mix);
       color: var(--text-mix);
 
-      /* Safari */
-      &::-webkit-datetime-edit {
-        opacity: 0;
-      }
-
-      /* Chrome */
-      &::-webkit-calendar-picker-indicator {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-      }
-
-      /* Firefox */
+      &::placeholder,
       &::-webkit-input-placeholder {
-        opacity: 0;
+        color: color-mix(in srgb, var(--text-mix), transparent 50%);
+      }
+
+      &::-webkit-calendar-picker-indicator {
+        cursor: pointer;
       }
 
       &[type="checkbox"] {
@@ -313,17 +302,22 @@
         height: 2em;
         padding: 0;
         margin-block: auto;
-        cursor: pointer;
         border-width: 1.5px;
-      }
-
-      @media (prefers-color-scheme: dark) {
-        --surface-color-mix: black 80%;
       }
     }
 
-    & > :is(textarea) {
+    & :is(textarea) {
       resize: vertical;
+    }
+
+    & :is(select, input[type="checkbox"]) {
+      cursor: pointer;
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .form-field :is(input, textarea, select) {
+      --surface-color-mix: black 80%;
     }
   }
 }
