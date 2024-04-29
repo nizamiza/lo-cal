@@ -4,15 +4,15 @@ import Select from "@/components/Select";
 const VIEW_MODE_OPTIONS = ["day", "week", "month"];
 
 export default function ViewModeSelect() {
-  const [viewMode, seViewMode] = usePreference("view-mode");
+  const [viewMode, setViewMode] = usePreference("view-mode");
 
   return (
     <Select
       className="[&_select]:capitalize text-xs sm:text-sm md:text-base"
       onChange={(e) =>
-        seViewMode((e.target as HTMLSelectElement).value as ViewMode)
+        setViewMode((e.target as HTMLSelectElement).value as ViewMode)
       }
-      defaultValue={viewMode}
+      value={viewMode}
       label="Select a view mode"
       id="view-mode-select"
       sr-only-label

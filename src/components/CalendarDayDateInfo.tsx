@@ -17,7 +17,7 @@ export default function CalendarDayDateInfo({
       <span className="flex flex-row items-center justify-between w-full gap-1">
         <span
           className={`
-            text-[0.625rem] sm:text-xs md:text-sm ${isToday ? "font-bold" : ""}
+            text-[0.5rem] sm:text-xs md:text-sm ${isToday ? "font-bold" : ""}
           `}
           role="presentation"
         >

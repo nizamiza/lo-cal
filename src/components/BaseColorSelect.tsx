@@ -17,13 +17,13 @@ const COLOR_OPTIONS = [
 ];
 
 export default function BaseColorSelect() {
-  const [baseColor, seBaseColor] = usePreference("base-color");
+  const [baseColor, setBaseColor] = usePreference("base-color");
 
   return (
     <Select
       className="[&_select]:capitalize"
-      onChange={(e) => seBaseColor((e.target as HTMLSelectElement).value)}
-      defaultValue={baseColor}
+      onChange={(e) => setBaseColor((e.target as HTMLSelectElement).value)}
+      value={baseColor}
       label="Select a base color"
       id="base-color-select"
       sr-only-label

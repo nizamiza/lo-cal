@@ -11,8 +11,8 @@ function App() {
         <StatusMessages>
           <main
             className={`
-              min-h-screen flex flex-col justify-start px-4 pt-4 pb-8 gap-6
-              max-w-[86rem] mx-auto
+              min-h-screen flex flex-col justify-start gap-6 max-w-[86rem] mx-auto
+              px-2 pt-2 pb-4 sm:px-4 sm:pt-4 sm:pb-8
             `}
           >
             <Calendar />

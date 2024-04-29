@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import WeekDaysHeader from "@/components/WeekDaysHeader";
 import useWeekDays, { getWeekDay } from "@/hooks/useWeekDays";
 import CalendarDay from "@/components/CalendarDay";
@@ -13,16 +14,16 @@ export default function WeekView() {
 
   const eventDates = useMemo(() => {
     return Array.from({ length: weekDays.length }, (_, i) => {
-      const date = new Date(
+      const eventDate = new Date(
         year,
-        currentMonth,
-        currentDate.getDate() - daysToFirstDayOfWeek + i
+        month,
+        date.getDate() - daysToFirstDayOfWeek + i
       );
 
-      const eventsOnDate = getEventsOnDate(date);
+      const eventsOnDate = getEventsOnDate(eventDate);
 
       return {
-        date,
+        date: eventDate,
         events: eventsOnDate,
       };
     });
@@ -30,14 +31,20 @@ export default function WeekView() {
 
   return (
     <div className="grid gap-4">
-      <WeekDaysHeader />
-      <section className="grid min-h-[--day-min-height]">
+      <WeekDaysHeader
+        listClassName={`
+          grid-cols-[1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)]
+          md:grid-cols-[1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr]
+        `}
+        separatorClassName="[&:nth-of-type(4)]:opacity-0 md:[&:nth-of-type(4)]:opacity-1"
+      />
+      <section className="grid md:min-h-[--day-min-height]">
         <h2 className="sr-only">Week {weekNumber}</h2>
-        <ol className="grid grid-cols-7 gap-1 sm:gap-2">
+        <ol className="grid grid-cols-4 md:grid-cols-7 gap-1 sm:gap-2">
           {eventDates.map(({ date, events }) => (
             <li key={`week-view-${date.toISOString()}`}>
               <CalendarDay
-                className="aspect-auto"
+                className="md:aspect-auto"
                 date={date}
                 events={events}
               />

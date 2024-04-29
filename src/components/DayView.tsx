@@ -8,8 +8,12 @@ export default function DayView() {
   const events = useMemo(() => getEventsOnDate(date), [date, getEventsOnDate]);
 
   return (
-    <div className="grid gap-4 min-h-[--day-min-height]">
-      <CalendarDay className="aspect-auto h-full" date={date} events={events} />
+    <div className="grid gap-4 min-h-[--day-min-height] max-w-2xl">
+      <CalendarDay
+        className="aspect-auto rounded-md sm:rounded-xl"
+        date={date}
+        events={events}
+      />
     </div>
   );
 }

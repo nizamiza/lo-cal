@@ -192,6 +192,7 @@
     border-top-right-radius: var(--br);
 
     & > header {
+      --surface-alpha: 0.9;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -199,10 +200,12 @@
       padding: var(--py) var(--px);
       position: sticky;
       top: 0;
-      backdrop-filter: blur(1rem);
+      background-color: var(--surface-mix);
+      z-index: 100;
     }
 
     & > footer {
+      --surface-alpha: 0.9;
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
@@ -210,7 +213,8 @@
       padding: var(--py) var(--px);
       position: sticky;
       bottom: 0;
-      backdrop-filter: blur(1rem);
+      background-color: var(--surface-mix);
+      z-index: 100;
     }
 
     & > hr {

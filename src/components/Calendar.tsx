@@ -16,14 +16,14 @@ export default function Calendar() {
       <EventModalContextProvider>
         <nav
           aria-label="Today and settings"
-          className="flex justify-between items-center gap-2"
+          className="grid grid-cols-[.2fr_1fr_.2fr] items-center gap-2"
         >
-          <TodayButton className="self-center" />
-          <h2 className="h6 sm:h5 md:h4 text-center">
+          <TodayButton className="justify-self-center sm:justify-self-start" />
+          <h2 className="text-xs sm:h6 sm:h5 md:h4 justify-self-center text-center">
             Today is{" "}
             {new Date().toLocaleDateString("en-US", { dateStyle: "full" })}
           </h2>
-          <Settings />
+          <Settings className="justify-self-center sm:justify-self-end" />
         </nav>
         {viewMode === "week" && <WeekView />}
         {viewMode === "month" && <MonthView />}

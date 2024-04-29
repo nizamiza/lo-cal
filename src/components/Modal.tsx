@@ -37,7 +37,7 @@ export default function Modal({
       <header>
         {title && <h2>{title}</h2>}
         <form method="dialog">
-          <button aria-label="Close" type="button">
+          <button aria-label="Close" type="submit">
             <Close />
           </button>
         </form>
