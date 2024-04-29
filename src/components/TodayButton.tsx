@@ -1,6 +1,6 @@
 import { HTMLAttributes } from "react";
-import { twMerge } from "tailwind-merge";
 import { usePreference } from "@/contexts/Preferences";
+import { cn } from "@/shared/utils";
 
 type TodayButtonProps = HTMLAttributes<HTMLButtonElement>;
 
@@ -14,9 +14,10 @@ export default function TodayButton({ className, ...props }: TodayButtonProps) {
   return (
     <button
       title="Go to today"
-      className={twMerge("btn surface text-sm sm:text-base", className)}
+      className={cn("btn surface text-sm sm:text-base", className)}
       {...props}
       onClick={handleClick}
+      type="button"
     >
       <span>
         <span>T</span>

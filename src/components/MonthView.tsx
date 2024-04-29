@@ -2,32 +2,20 @@ import { useMemo } from "react";
 import WeekDaysHeader from "@/components/WeekDaysHeader";
 import CalendarDay from "@/components/CalendarDay";
 import useCalendarViewModel from "@/hooks/useCalendarViewModel";
-
-function getDaysInMonth(year: number, month: number) {
-  return new Date(year, month + 1, 0).getDate();
-}
+import useAlignedEventDates from "@/hooks/useAlignedEventDates";
 
 export default function MonthView() {
-  const [{ date, year, month }, getEventsOnDate] = useCalendarViewModel();
+  const [{ date, year }] = useCalendarViewModel();
 
-  const daysInMonth = useMemo(() => getDaysInMonth(year, month), [year, month]);
-
-  const eventDates = useMemo(() => {
-    return Array.from({ length: daysInMonth }, (_, i) => {
-      const date = new Date(year, month, i + 1);
-      const eventsOnDate = getEventsOnDate(date);
-
-      return {
-        date,
-        events: eventsOnDate,
-      };
-    });
-  }, [year, month, daysInMonth, getEventsOnDate]);
+  const eventDates = useAlignedEventDates(
+    7 * 5,
+    new Date(year, date.getMonth(), 1)
+  );
 
   const heading = useMemo(
     () =>
       `Days of ${Intl.DateTimeFormat("en-US", { month: "long" }).format(date)} ${year}`,
-    [date, year],
+    [date, year]
   );
 
   return (

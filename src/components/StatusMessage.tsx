@@ -8,6 +8,7 @@ import AlertOctagon from "@/icons/alert-octagon";
 import CheckCircle from "@/icons/check-circle";
 import Info from "@/icons/info";
 import Close from "@/icons/close";
+import { cn } from "@/shared/utils";
 
 const ICON_MAP: Record<StatusMessageType, ReactNode> = {
   success: <CheckCircle />,
@@ -30,15 +31,15 @@ export default function StatusMessage({
 
   return (
     <dialog
-      className={`
-        surface [--surface-alpha:0.85] backdrop-blur-sm
-        flex items-start gap-3 p-3 rounded-lg static h-auto m-0 max-w-[40ch]
-        leading-[1]
-        ${type === "info" ? "[--base-color:steelblue]" : ""}
-        ${type === "success" ? "[--base-color:green]" : ""}
-        ${type === "warning" ? "[--base-color:orange]" : ""}
-        ${type === "error" ? "[--base-color:red]" : ""}
-      `}
+      className={cn(
+        "surface [--surface-alpha:0.85] backdrop-blur-sm",
+        "flex items-start gap-3 p-3 rounded-lg static h-auto m-0 max-w-[40ch]",
+        "leading-[1]",
+        type === "info" && "[--base-color:steelblue]",
+        type === "success" && "[--base-color:green]",
+        type === "warning" && "[--base-color:orange]",
+        type === "error" && "[--base-color:red]"
+      )}
       open
     >
       {ICON_MAP[type]}

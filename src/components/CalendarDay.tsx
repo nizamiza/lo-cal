@@ -1,9 +1,9 @@
 import { MouseEvent } from "react";
-import { twMerge } from "tailwind-merge";
 import { Event } from "@/event/types";
 import CalendarDayDateInfo from "@/components/CalendarDayDateInfo";
 import CalendarDayEvents from "@/components/CalendarDayEvents";
 import { usePreference } from "@/contexts/Preferences";
+import { cn } from "@/shared/utils";
 
 type CalendarDayProps = {
   className?: string;
@@ -33,14 +33,15 @@ export default function CalendarDay({
   return (
     <div
       onClick={handleClick}
-      className={twMerge(
-        `
-          surface @container ${viewMode !== "day" ? "cursor-pointer" : ""}
-          ${isToday ? "[--base-color:var(--base-dark)] [--surface-alpha:0.5]" : "[--surface-alpha:0.35]"}
-          flex flex-col justify-start items-start gap-1 sm:gap-2 h-full
-          p-1 sm:p-2 aspect-square rounded-sm sm:rounded-md md:rounded-xl
-        `,
-        className,
+      className={cn(
+        "surface @container",
+        viewMode !== "day" ? "cursor-pointer" : "",
+        isToday
+          ? "[--base-color:var(--base-dark)] [--surface-alpha:0.5]"
+          : "[--surface-alpha:0.35]",
+        "flex flex-col justify-start items-start gap-1 sm:gap-2 h-full",
+        "p-1 sm:p-2 aspect-square rounded-sm sm:rounded-md md:rounded-xl",
+        className
       )}
     >
       <CalendarDayDateInfo date={date} isToday={isToday} />

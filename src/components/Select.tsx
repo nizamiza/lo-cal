@@ -1,7 +1,7 @@
 import { HTMLAttributes, useRef } from "react";
-import { twMerge } from "tailwind-merge";
 import Chevron from "@/icons/chevron";
 import LabelText from "@/components/LabelText";
+import { cn } from "@/shared/utils";
 
 type SelectProps = Omit<HTMLAttributes<HTMLSelectElement>, "id"> & {
   label: string;
@@ -21,17 +21,17 @@ export default function Select({
   const selectRef = useRef<HTMLSelectElement>(null);
 
   return (
-    <div className={twMerge("grid gap-2", className)}>
-      <label className={`${srOnlyLabel ? "sr-only" : ""}`} htmlFor={id}>
+    <div className={cn("grid gap-2", className)}>
+      <label className={cn(srOnlyLabel && "sr-only")} htmlFor={id}>
         <LabelText>{label}</LabelText>
       </label>
       <div className="flex items-center relative">
         <select
           id={id}
-          className={`
-            appearance-none bg-transparent cursor-pointer px-2 py-1 pr-8 rounded-md
-            ${srOnlyLabel ? "" : "border"}
-          `}
+          className={cn(
+            "appearance-none bg-transparent cursor-pointer px-2 py-1 pr-8 rounded-md",
+            !srOnlyLabel && "border"
+          )}
           ref={selectRef}
           {...props}
         >

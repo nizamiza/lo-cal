@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import Chevron from "@/icons/chevron";
 import { usePreference } from "@/contexts/Preferences";
 import useWeekNumber from "@/hooks/useWeekNumber";
+import { cn } from "@/shared/utils";
 
 export default function DateControls() {
   const [viewMode] = usePreference("view-mode");
@@ -44,21 +45,21 @@ export default function DateControls() {
             : {
                 month: "long",
                 year: "numeric",
-              },
+              }
       ).format(new Date(lastViewedDate)),
-    [lastViewedDate, viewMode],
+    [lastViewedDate, viewMode]
   );
 
   return (
     <div
-      className={`
-        flex items-center gap-2 @xs/main:gap-3
-        text-xs @xs:text-sm @sm:text-base
-      `}
+      className={cn(
+        "flex items-center gap-2 @xs:gap-3 text-xs @xs:text-sm @sm:text-base"
+      )}
     >
       <button
         title={`Previous ${viewMode}`}
         onClick={() => handleDateChange("previous")}
+        type="button"
       >
         <Chevron direction="left" />
       </button>
@@ -69,6 +70,7 @@ export default function DateControls() {
       <button
         title={`Next ${viewMode}`}
         onClick={() => handleDateChange("next")}
+        type="button"
       >
         <Chevron direction="right" />
       </button>

@@ -1,6 +1,6 @@
 import { useEffect, useRef, HTMLAttributes, ReactNode } from "react";
-import { twMerge } from "tailwind-merge";
 import Close from "@/icons/close";
+import { cn } from "@/shared/utils";
 
 type ModalProps = HTMLAttributes<HTMLDialogElement> & {
   open?: boolean;
@@ -29,7 +29,7 @@ export default function Modal({
 
   return (
     <dialog
-      className={twMerge("modal surface", className)}
+      className={cn("modal surface", className)}
       ref={dialogRef}
       onClose={onClose}
       {...props}

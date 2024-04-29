@@ -7,6 +7,7 @@ import Settings from "@/components/Settings";
 import EventModalContextProvider from "@/contexts/EventModalContext";
 import EventsContextProvider from "@/contexts/EventsContext";
 import { usePreference } from "@/contexts/Preferences";
+import { cn } from "@/shared/utils";
 
 export default function Calendar() {
   const [viewMode] = usePreference("view-mode");
@@ -19,7 +20,12 @@ export default function Calendar() {
           className="grid grid-cols-[.2fr_1fr_.2fr] items-center gap-2"
         >
           <TodayButton className="justify-self-center sm:justify-self-start" />
-          <h2 className="text-xs sm:h6 sm:h5 md:h4 justify-self-center text-center">
+          <h2
+            className={cn(
+              "text-xs sm:h6 sm:h5 md:h4",
+              "justify-self-center text-center"
+            )}
+          >
             Today is{" "}
             {new Date().toLocaleDateString("en-US", { dateStyle: "full" })}
           </h2>

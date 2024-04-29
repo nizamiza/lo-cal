@@ -1,23 +1,33 @@
 import { HTMLAttributes, ChangeEvent } from "react";
-import { twMerge } from "tailwind-merge";
 import LabelText from "@/components/LabelText";
 import CalendarIcon from "@/icons/calendar";
+import Chevron from "@/icons/chevron";
+import CheckIcon from "@/icons/check";
+import { cn } from "@/shared/utils";
 
 type InputAttributes = HTMLAttributes<HTMLInputElement>;
 
-type FormFieldProps = {
+export type FormFieldSelectOption = {
+  value: string;
+  label: string;
+};
+
+export type FormFieldProps = {
   className?: string;
-  element?: "input" | "textarea";
+  element?: "input" | "textarea" | "select";
   label: string;
   id: string;
   rows?: number;
   placeholder?: string;
   required?: boolean;
   defaultValue?: string;
+  disabled?: boolean;
   value?: string;
-  onChange?: (value: string) => void;
-  type?: string;
+  checked?: boolean;
+  onChange?: (value: string, checked: boolean) => void;
   inputMode?: InputAttributes["inputMode"];
+  type?: "text" | "number" | "date" | "datetime-local" | "checkbox";
+  options?: FormFieldSelectOption[];
 };
 
 export default function FormField({
@@ -26,41 +36,44 @@ export default function FormField({
   label,
   id,
   required,
+  disabled,
   defaultValue,
   value,
+  checked,
   onChange,
   placeholder,
   type = "text",
   inputMode,
   rows = 7,
+  options,
 }: FormFieldProps) {
   const isFirefox =
     typeof navigator !== "undefined" && navigator.userAgent.includes("Firefox");
 
-  const handleChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const target = event.target as HTMLInputElement | HTMLTextAreaElement;
-    onChange?.(target.value);
+  const handleChange = (event: ChangeEvent) => {
+    const target = event.target as HTMLInputElement;
+    onChange?.(target.value, target.checked || false);
   };
 
   return (
-    <div className={twMerge("form-field", className)}>
+    <div className={cn("form-field", className)}>
       <label htmlFor={id}>
         <LabelText>{label}</LabelText>
       </label>
       {element === "input" ? (
-        <span className="relative leading-0">
+        <span className="relative flex">
           <input
             id={id}
             name={id}
             required={required}
+            disabled={disabled}
             defaultValue={defaultValue}
             placeholder={placeholder}
             type={type}
             inputMode={inputMode}
             onChange={handleChange}
             value={value}
+            checked={checked}
           />
           {!isFirefox && (
             <>
@@ -74,12 +87,38 @@ export default function FormField({
               )}
             </>
           )}
+          {type === "checkbox" && value && (
+            <CheckIcon className="absolute top-1 left-1 pointer-events-none" />
+          )}
         </span>
+      ) : element === "select" ? (
+        <div className="flex items-center relative">
+          <select
+            id={id}
+            name={id}
+            required={required}
+            disabled={disabled}
+            defaultValue={defaultValue}
+            onChange={handleChange}
+            value={value}
+          >
+            {options?.map(({ value, label }) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+          <Chevron
+            direction="down"
+            className="h-4 w-4 absolute top-1/2 right-2 -translate-y-1/2 pointer-events-none"
+          />
+        </div>
       ) : (
         <textarea
           id={id}
           name={id}
           required={required}
+          disabled={disabled}
           defaultValue={defaultValue}
           rows={rows}
           onChange={handleChange}

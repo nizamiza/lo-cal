@@ -132,6 +132,25 @@
   button {
     border-radius: 0.75em;
   }
+
+  form {
+    display: grid;
+    gap: 1rem;
+  }
+
+  fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    border-width: 1.5px;
+    padding: 0.5rem 0.75rem 1rem;
+    border-radius: 0.5rem;
+
+    & > legend {
+      font-weight: 500;
+      padding-inline: 0.25rem;
+    }
+  }
 }
 
 @layer components {
@@ -247,13 +266,6 @@
     }
   }
 
-  .form {
-    --gap: 1rem;
-
-    display: grid;
-    gap: var(--gap);
-  }
-
   .form-field {
     --gap: 0.25rem;
     --br: 0.5rem;
@@ -293,6 +305,20 @@
       /* Firefox */
       &::-webkit-input-placeholder {
         opacity: 0;
+      }
+
+      &[type="checkbox"] {
+        aspect-ratio: 1;
+        width: 2em;
+        height: 2em;
+        padding: 0;
+        margin-block: auto;
+        cursor: pointer;
+        border-width: 1.5px;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        --surface-color-mix: black 80%;
       }
     }
 

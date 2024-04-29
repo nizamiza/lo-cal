@@ -1,5 +1,5 @@
 import { HTMLAttributes } from "react";
-import { twMerge } from "tailwind-merge";
+import { cn } from "@/shared/utils";
 
 type LabelTextProps = HTMLAttributes<HTMLSpanElement>;
 
@@ -9,7 +9,7 @@ export default function LabelText({
   ...props
 }: LabelTextProps) {
   return (
-    <span className={twMerge("text-sm font-semibold", className)} {...props}>
+    <span className={cn("text-sm font-semibold", className)} {...props}>
       {children}
     </span>
   );

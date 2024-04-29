@@ -3,6 +3,7 @@ import { Event } from "@/event/types";
 import MapPin from "@/icons/map-pin";
 import LinkIcon from "@/icons/link";
 import { useEventModalContext } from "@/contexts/EventModalContext";
+import { cn } from "@/shared/utils";
 
 type EventCardProps = {
   event: Event;
@@ -19,25 +20,25 @@ export default function EventCard({ event }: EventCardProps) {
   return (
     <article
       onClick={handleClick}
-      className={`
-        pointer-events-none @[8rem]:pointer-events-auto @[8rem]:rounded-sm
-        @[8rem]:cursor-pointer
-        @[8rem]:surface [--base-color:var(--base-light)] @[8rem]:shadow-md
-        grid gap-1 @[8rem]:p-2 @xs:gap-2 @sm:gap-4 @xs:rounded-md
-      `}
+      className={cn(
+        "pointer-events-none @[8rem]:pointer-events-auto @[8rem]:cursor-pointer",
+        "[--base-color:var(--base-light)] @[8rem]:surface @[8rem]:shadow-md",
+        "grid gap-1 @[8rem]:p-2 @xs:gap-2 @sm:gap-4",
+        "@[8rem]:rounded-sm @xs:rounded-md"
+      )}
     >
       <h3
-        className={`
-          text-[0.375rem] @[2rem]:text-[0.5rem] @[4rem]:text-[0.675rem]
-          leading-[1] line-clamp-1
-          @xs:text-sm @sm:text-base @sm:line-clamp-2
-        `}
+        className={cn(
+          "text-[0.375rem] @[2rem]:text-[0.5rem] @[4rem]:text-[0.675rem]",
+          "leading-[1] line-clamp-1",
+          "@xs:text-sm @sm:text-base @sm:line-clamp-2"
+        )}
       >
         <span
-          className={`
-            inline-block @[8rem]:hidden w-[0.5lh] mr-[0.125rem] mb-[0.125lh]
-            aspect-square bg-current rounded-full
-          `}
+          className={cn(
+            "inline-block @[8rem]:hidden w-[0.5lh] mr-[0.125rem] mb-[0.125lh]",
+            "aspect-square bg-current rounded-full"
+          )}
           role="presentation"
         />
         {event.summary}
@@ -46,13 +47,12 @@ export default function EventCard({ event }: EventCardProps) {
         {event.description}
       </p>
       <footer
-        className={`
-          hidden @[8rem]:flex flex-wrap items-center gap-1 text-[0.625rem]
-          @xs:text-sm @xs:gap-2
-          @sm:text-base @sm:gap-4
-        `}
+        className={cn(
+          "hidden @[8rem]:flex flex-wrap items-center gap-1 text-[0.625rem]",
+          "@xs:text-sm @xs:gap-2 @sm:text-base @sm:gap-4"
+        )}
       >
-        <time className="" dateTime={event.start}>
+        <time dateTime={event.start}>
           {new Date(event.start).toLocaleTimeString("default", {
             hour: "numeric",
             minute: "2-digit",
@@ -65,10 +65,10 @@ export default function EventCard({ event }: EventCardProps) {
           >
             <MapPin className="w-[1em] h-[1em]" />
             <span
-              className={`
-                hidden text-ellipsis overflow-hidden whitespace-nowrap
-                @xs:inline @xs:max-w-[20ch] @sm:max-w-[30ch]
-              `}
+              className={cn(
+                "hidden text-ellipsis overflow-hidden whitespace-nowrap",
+                "@xs:inline @xs:max-w-[20ch] @sm:max-w-[30ch]"
+              )}
             >
               {event.location}
             </span>

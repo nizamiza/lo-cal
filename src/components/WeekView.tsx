@@ -1,41 +1,20 @@
-import { useMemo } from "react";
 import WeekDaysHeader from "@/components/WeekDaysHeader";
-import useWeekDays, { getWeekDay } from "@/hooks/useWeekDays";
 import CalendarDay from "@/components/CalendarDay";
+import useAlignedEventDates from "@/hooks/useAlignedEventDates";
 import useWeekNumber from "@/hooks/useWeekNumber";
-import useCalendarViewModel from "@/hooks/useCalendarViewModel";
+import { cn } from "@/shared/utils";
 
 export default function WeekView() {
-  const [{ date, year, month }, getEventsOnDate] = useCalendarViewModel();
-  const weekDays = useWeekDays();
-
-  const daysToFirstDayOfWeek = weekDays.indexOf(getWeekDay(date));
-  const weekNumber = useWeekNumber(date);
-
-  const eventDates = useMemo(() => {
-    return Array.from({ length: weekDays.length }, (_, i) => {
-      const eventDate = new Date(
-        year,
-        month,
-        date.getDate() - daysToFirstDayOfWeek + i,
-      );
-
-      const eventsOnDate = getEventsOnDate(eventDate);
-
-      return {
-        date: eventDate,
-        events: eventsOnDate,
-      };
-    });
-  }, [year, month, daysToFirstDayOfWeek, getEventsOnDate, date, weekDays]);
+  const eventDates = useAlignedEventDates(7);
+  const weekNumber = useWeekNumber(eventDates[0].date);
 
   return (
     <div className="grid gap-4">
       <WeekDaysHeader
-        listClassName={`
-          grid-cols-[1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)]
-          md:grid-cols-[1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr]
-        `}
+        listClassName={cn(
+          "grid-cols-[1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)]",
+          "md:grid-cols-[1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr]"
+        )}
         separatorClassName="[&:nth-of-type(4)]:opacity-0 md:[&:nth-of-type(4)]:opacity-1"
       />
       <section className="grid md:min-h-[--day-min-height]">

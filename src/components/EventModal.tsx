@@ -9,6 +9,7 @@ import useUpdateEvent from "@/hooks/useUpdateEvent";
 import Modal from "@/components/Modal";
 import FormField from "@/components/FormField";
 import { usePreference } from "@/contexts/Preferences";
+import { useEventsContext } from "@/contexts/EventsContext";
 import Trash from "@/icons/trash";
 
 type EventModalProps = {
@@ -21,7 +22,7 @@ const FORM_ID = "event-form";
 
 function getEventDefaultValues(
   lastViewedDate: string,
-  event?: CalendarEvent | null,
+  event?: CalendarEvent | null
 ): CalendarEventCreateInput {
   return {
     summary: event?.summary || "",
@@ -34,10 +35,12 @@ function getEventDefaultValues(
 }
 
 export default function EventModal({ event, open, onClose }: EventModalProps) {
+  const { refreshEvents } = useEventsContext();
+
   const [lastViewedDate] = usePreference("last-viewed-date");
 
   const [formValues, setFormValues] = useState<CalendarEventCreateInput>(
-    getEventDefaultValues(lastViewedDate, event),
+    getEventDefaultValues(lastViewedDate, event)
   );
 
   const [isDeleting, setIsDeleting] = useState(false);
@@ -79,16 +82,18 @@ export default function EventModal({ event, open, onClose }: EventModalProps) {
     }
 
     setFormValues(getEventDefaultValues(lastViewedDate, event));
+    refreshEvents();
     onClose?.();
   };
 
   const handleDelete = async () => {
-    if (id) {
-      await deleteEvent(event);
+    if (!id) return;
 
-      setIsDeleting(false);
-      onClose?.();
-    }
+    await deleteEvent(event);
+
+    setIsDeleting(false);
+    refreshEvents();
+    onClose?.();
   };
 
   useEffect(() => {
@@ -108,8 +113,11 @@ export default function EventModal({ event, open, onClose }: EventModalProps) {
             </button>
             <button
               className="btn"
-              onClick={() => setIsDeleting(false)}
               type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                setIsDeleting(false);
+              }}
             >
               Cancel
             </button>
@@ -153,7 +161,7 @@ export default function EventModal({ event, open, onClose }: EventModalProps) {
         </p>
       ) : (
         <>
-          <form className="form" onSubmit={handleSubmit} id={FORM_ID}>
+          <form onSubmit={handleSubmit} id={FORM_ID}>
             <FormField
               label="Summary"
               id="summary"

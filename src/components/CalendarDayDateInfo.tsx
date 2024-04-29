@@ -1,3 +1,5 @@
+import { cn } from "@/shared/utils";
+
 type CalendarDayDateInfoProps = {
   date: Date;
   isToday?: boolean;
@@ -14,13 +16,16 @@ export default function CalendarDayDateInfo({
       <time dateTime={date.toISOString()} className="sr-only">
         {date.toDateString()}
       </time>
-      <span className="flex flex-row items-center justify-between w-full gap-1 @xs:gap-2">
+      <span
+        className={cn(
+          "flex flex-row items-center justify-between w-full gap-1 @xs:gap-2"
+        )}
+      >
         <span
-          className={`
-            text-[0.5rem] @[4rem]:text-[0.675rem]
-            @xs:text-xs @sm:text-sm @md:text-base
-            ${isToday ? "font-bold" : ""}
-          `}
+          className={cn(
+            "text-[0.5rem] @[4rem]:text-[0.675rem] @xs:text-xs @sm:text-sm @md:text-base",
+            isToday && "font-bold"
+          )}
           role="presentation"
         >
           {dayNumber}
