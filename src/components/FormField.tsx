@@ -1,7 +1,6 @@
 import { HTMLAttributes, ChangeEvent } from "react";
 import LabelText from "@/components/LabelText";
 import useDateTimeFormatter from "@/hooks/useDateTimeFormatter";
-import CalendarIcon from "@/icons/calendar";
 import Chevron from "@/icons/chevron";
 import CheckIcon from "@/icons/check";
 import { cn } from "@/shared/utils";
