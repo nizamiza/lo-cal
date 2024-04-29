@@ -9,7 +9,6 @@ import FormField from "@/components/FormField";
 import Trash from "@/icons/trash";
 
 type EventModalProps = {
-  id?: number;
   event?: CalendarEvent | null;
   open?: boolean;
   onClose?: () => void;
@@ -17,14 +16,10 @@ type EventModalProps = {
 
 const FORM_ID = "event-form";
 
-export default function EventModal({
-  id,
-  event,
-  open,
-  onClose,
-}: EventModalProps) {
+export default function EventModal({ event, open, onClose }: EventModalProps) {
   const [isDeleting, setIsDeleting] = useState(false);
 
+  const id = event?.id;
   const addEvent = useAddEvent();
   const updateEvent = useUpdateEvent();
   const deleteEvent = useDeleteEvent();
@@ -45,7 +40,7 @@ export default function EventModal({
         ...data,
         [key]: getFormDataStringValue(formData, key),
       }),
-      {} as CalendarEvent,
+      {} as CalendarEvent
     );
 
     const startDate = new Date(calendarEvent.start);
@@ -56,7 +51,7 @@ export default function EventModal({
     calendarEvent.end = endDate.toISOString();
 
     if (id) {
-      await updateEvent(id, calendarEvent);
+      await updateEvent(calendarEvent);
     } else {
       await addEvent(calendarEvent);
     }
@@ -66,7 +61,7 @@ export default function EventModal({
 
   const handleDelete = async () => {
     if (id) {
-      await deleteEvent(id);
+      await deleteEvent(event);
       onClose?.();
     }
   };

@@ -14,9 +14,9 @@ export default function EventCard({ event }: EventCardProps) {
     <article
       onClick={() => setEvent(event)}
       className={`
-        pointer-events-none @[4rem]:pointer-events-auto
+        pointer-events-none @[4rem]:pointer-events-auto @[4rem]:rounded-sm
         @[4rem]:surface [--base-color:var(--base-light)] @[4rem]:shadow-md
-        grid gap-1 @[4rem]:p-2 @xs:gap-2 @sm:gap-4
+        grid gap-1 @[4rem]:p-2 @xs:gap-2 @sm:gap-4 @xs:rounded-md
       `}
     >
       <h3

@@ -50,14 +50,19 @@ export default function DateControls() {
   );
 
   return (
-    <div className="flex items-center gap-2 text-xs sm:text-sm md:text-base">
+    <div
+      className={`
+        flex items-center gap-2 @xs/main:gap-3
+        text-xs @xs:text-sm @sm:text-base
+      `}
+    >
       <button
         title={`Previous ${viewMode}`}
         onClick={() => handleDateChange("previous")}
       >
         <Chevron direction="left" />
       </button>
-      <time dateTime={lastViewedDate} className="shrink-0">
+      <time dateTime={lastViewedDate} className="text-center">
         {formattedDate}
         {viewMode === "week" ? ` W${weekNumber}` : ""}
       </time>

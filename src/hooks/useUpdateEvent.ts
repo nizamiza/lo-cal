@@ -6,9 +6,9 @@ import { logError } from "@/shared/utils";
 export default function useUpdateEvent() {
   const { addMessage } = useStatusMessages();
 
-  return async (id: IDBValidKey, event: Event) => {
+  return async (event: Event) => {
     try {
-      await updateEvent(id, event);
+      await updateEvent(event);
       addMessage({
         type: "success",
         content: "Event updated successfully.",

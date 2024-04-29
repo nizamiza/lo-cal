@@ -1,3 +1,4 @@
+import { Event } from "@/event/types";
 import { deleteEvent } from "@/event/indexed-db";
 import { useStatusMessages } from "@/contexts/StatusMessages";
 import { logError } from "@/shared/utils";
@@ -5,9 +6,9 @@ import { logError } from "@/shared/utils";
 export default function useDeleteEvent() {
   const { addMessage } = useStatusMessages();
 
-  return async (id: IDBValidKey) => {
+  return async (event: Event) => {
     try {
-      await deleteEvent(id);
+      await deleteEvent(event);
       addMessage({
         type: "success",
         content: "Event deleted successfully.",

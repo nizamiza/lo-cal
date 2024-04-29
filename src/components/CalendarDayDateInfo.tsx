@@ -14,10 +14,12 @@ export default function CalendarDayDateInfo({
       <time dateTime={date.toISOString()} className="sr-only">
         {date.toDateString()}
       </time>
-      <span className="flex flex-row items-center justify-between w-full gap-1">
+      <span className="flex flex-row items-center justify-between w-full gap-1 @xs:gap-2">
         <span
           className={`
-            text-[0.5rem] sm:text-xs md:text-sm ${isToday ? "font-bold" : ""}
+            text-[0.5rem] @[4rem]:text-[0.675rem]
+            @xs:text-xs @sm:text-sm @md:text-base
+            ${isToday ? "font-bold" : ""}
           `}
           role="presentation"
         >
@@ -33,7 +35,9 @@ export default function CalendarDayDateInfo({
             </span>
           </>
         )}
-        {isToday && <span className="date-note hidden md:inline">Today</span>}
+        {isToday && (
+          <span className="date-note hidden @[12rem]:inline">Today</span>
+        )}
       </span>
     </>
   );

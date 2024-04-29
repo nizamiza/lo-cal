@@ -7,7 +7,7 @@ type CalendarDayEventsProps = {
 
 export default function CalendarDayEvents({ events }: CalendarDayEventsProps) {
   return (
-    <ol className="grid gap-1 w-full">
+    <ol className="grid gap-1 @sm:gap-2 @md:gap-3 w-full">
       {events.map((event, index) => (
         <li className="@container" key={index}>
           <EventCard event={event} />

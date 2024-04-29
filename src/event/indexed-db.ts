@@ -1,4 +1,4 @@
-import { Event } from "@/event/types";
+import { Event, EventCreateInput } from "@/event/types";
 
 const DB_NAME = "calendar";
 const DB_VERSION = 1.0;
@@ -42,7 +42,7 @@ function wrapRequest<T>(request: IDBRequest<T>): Promise<T> {
   });
 }
 
-export async function addEvent(event: Event): Promise<IDBValidKey> {
+export async function addEvent(event: EventCreateInput): Promise<IDBValidKey> {
   const db = await initDB();
 
   const tx = db.transaction(Store.events, "readwrite");
@@ -78,25 +78,22 @@ export async function getEvents(): Promise<Event[]> {
   return events;
 }
 
-export async function updateEvent(
-  id: IDBValidKey,
-  event: Event,
-): Promise<void> {
+export async function updateEvent(event: Event): Promise<void> {
   const db = await initDB();
 
   const tx = db.transaction(Store.events, "readwrite");
   const store = tx.objectStore(Store.events);
 
-  await wrapRequest(store.put(event, id));
+  await wrapRequest(store.put(event, event.id));
   await wrapTransaction(tx);
 }
 
-export async function deleteEvent(id: IDBValidKey): Promise<void> {
+export async function deleteEvent(event: Event): Promise<void> {
   const db = await initDB();
 
   const tx = db.transaction(Store.events, "readwrite");
   const store = tx.objectStore(Store.events);
 
-  await wrapRequest(store.delete(id));
+  await wrapRequest(store.delete(event.id));
   await wrapTransaction(tx);
 }

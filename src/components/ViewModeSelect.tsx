@@ -8,7 +8,7 @@ export default function ViewModeSelect() {
 
   return (
     <Select
-      className="[&_select]:capitalize text-xs sm:text-sm md:text-base"
+      className="[&_select]:capitalize text-xs @xs:text-sm @sm:text-base"
       onChange={(e) =>
         setViewMode((e.target as HTMLSelectElement).value as ViewMode)
       }

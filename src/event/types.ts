@@ -1,4 +1,5 @@
 export type Event = {
+  id: IDBValidKey;
   completed?: boolean;
   summary: string;
   description?: string;
@@ -7,3 +8,5 @@ export type Event = {
   end: string;
   url?: string;
 };
+
+export type EventCreateInput = Omit<Event, "id" | "completed">;

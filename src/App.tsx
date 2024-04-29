@@ -11,6 +11,7 @@ function App() {
         <StatusMessages>
           <main
             className={`
+              @container/main
               min-h-screen flex flex-col justify-start gap-6 max-w-[86rem] mx-auto
               px-2 pt-2 pb-4 sm:px-4 sm:pt-4 sm:pb-8
             `}

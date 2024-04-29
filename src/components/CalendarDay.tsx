@@ -50,8 +50,8 @@ export default function CalendarDay({
       onClick={handleClick}
       className={twMerge(
         `
-          surface
-          ${isToday ? "[--base-color:var(--base-dark)]" : "[--surface-alpha:0.35]"}
+          surface @container
+          ${isToday ? "[--base-color:var(--base-dark)] [--surface-alpha:0.5]" : "[--surface-alpha:0.35]"}
           flex flex-col justify-start items-start gap-1 sm:gap-2
           p-1 sm:p-2 aspect-square rounded-sm sm:rounded-md md:rounded-xl
         `,

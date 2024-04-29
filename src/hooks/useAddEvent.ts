@@ -1,12 +1,12 @@
 import { addEvent } from "@/event/indexed-db";
-import { Event } from "@/event/types";
+import { EventCreateInput } from "@/event/types";
 import { useStatusMessages } from "@/contexts/StatusMessages";
 import { logError } from "@/shared/utils";
 
 export default function useAddEvent() {
   const { addMessage } = useStatusMessages();
 
-  return async (event: Event) => {
+  return async (event: EventCreateInput) => {
     try {
       await addEvent(event);
       addMessage({
