@@ -7,6 +7,7 @@ type SelectProps = Omit<HTMLAttributes<HTMLSelectElement>, "id"> & {
   label: string;
   id: string;
   "sr-only-label"?: boolean;
+  value?: string;
 };
 
 export default function Select({

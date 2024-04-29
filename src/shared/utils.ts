@@ -10,16 +10,3 @@ export function logError<E = unknown>(
   console.error(error);
   onVisualLog?.(error);
 }
-
-export function getFormDataStringValue(
-  formData: FormData,
-  key: string,
-): string | undefined {
-  const value = formData.get(key);
-
-  if (typeof value === "string") {
-    return value;
-  }
-
-  return undefined;
-}

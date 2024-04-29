@@ -27,7 +27,7 @@ export default function MonthView() {
   const heading = useMemo(
     () =>
       `Days of ${Intl.DateTimeFormat("en-US", { month: "long" }).format(date)} ${year}`,
-    [date, year]
+    [date, year],
   );
 
   return (

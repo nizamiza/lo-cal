@@ -18,6 +18,6 @@ export default function useWeekDays() {
   const [firstDayOfWeek] = usePreference("first-day-of-week");
 
   return WEEK_DAYS.slice(firstDayOfWeek).concat(
-    WEEK_DAYS.slice(0, firstDayOfWeek)
+    WEEK_DAYS.slice(0, firstDayOfWeek),
   );
 }

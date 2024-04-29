@@ -33,6 +33,7 @@ export default function StatusMessage({
       className={`
         surface [--surface-alpha:0.85] backdrop-blur-sm
         flex items-start gap-3 p-3 rounded-lg static h-auto m-0 max-w-[40ch]
+        leading-[1]
         ${type === "info" ? "[--base-color:steelblue]" : ""}
         ${type === "success" ? "[--base-color:green]" : ""}
         ${type === "warning" ? "[--base-color:orange]" : ""}
@@ -41,7 +42,7 @@ export default function StatusMessage({
       open
     >
       {ICON_MAP[type]}
-      {children}
+      <div className="mt-1">{children}</div>
       <form method="dialog">
         <button
           aria-label="Close message"

@@ -3,7 +3,7 @@ import CalendarDay from "@/components/CalendarDay";
 import useCalendarViewModel from "@/hooks/useCalendarViewModel";
 
 export default function DayView() {
-  const [{ date, year, month }, getEventsOnDate] = useCalendarViewModel();
+  const [{ date }, getEventsOnDate] = useCalendarViewModel();
 
   const events = useMemo(() => getEventsOnDate(date), [date, getEventsOnDate]);
 

@@ -1,4 +1,4 @@
-import { HTMLAttributes, useState } from "react";
+import { HTMLAttributes, ChangeEvent } from "react";
 import { twMerge } from "tailwind-merge";
 import LabelText from "@/components/LabelText";
 import CalendarIcon from "@/icons/calendar";
@@ -14,6 +14,8 @@ type FormFieldProps = {
   placeholder?: string;
   required?: boolean;
   defaultValue?: string;
+  value?: string;
+  onChange?: (value: string) => void;
   type?: string;
   inputMode?: InputAttributes["inputMode"];
 };
@@ -25,15 +27,22 @@ export default function FormField({
   id,
   required,
   defaultValue,
+  value,
+  onChange,
   placeholder,
   type = "text",
   inputMode,
   rows = 7,
 }: FormFieldProps) {
-  const [value, setValue] = useState(defaultValue);
-
   const isFirefox =
     typeof navigator !== "undefined" && navigator.userAgent.includes("Firefox");
+
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const target = event.target as HTMLInputElement | HTMLTextAreaElement;
+    onChange?.(target.value);
+  };
 
   return (
     <div className={twMerge("form-field", className)}>
@@ -50,7 +59,8 @@ export default function FormField({
             placeholder={placeholder}
             type={type}
             inputMode={inputMode}
-            onChange={(event) => setValue(event.target.value)}
+            onChange={handleChange}
+            value={value}
           />
           {!isFirefox && (
             <>
@@ -72,6 +82,8 @@ export default function FormField({
           required={required}
           defaultValue={defaultValue}
           rows={rows}
+          onChange={handleChange}
+          value={value}
         />
       )}
     </div>

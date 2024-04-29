@@ -17,7 +17,7 @@ export default function WeekView() {
       const eventDate = new Date(
         year,
         month,
-        date.getDate() - daysToFirstDayOfWeek + i
+        date.getDate() - daysToFirstDayOfWeek + i,
       );
 
       const eventsOnDate = getEventsOnDate(eventDate);
@@ -27,7 +27,7 @@ export default function WeekView() {
         events: eventsOnDate,
       };
     });
-  }, [year, month, daysToFirstDayOfWeek, getEventsOnDate]);
+  }, [year, month, daysToFirstDayOfWeek, getEventsOnDate, date, weekDays]);
 
   return (
     <div className="grid gap-4">

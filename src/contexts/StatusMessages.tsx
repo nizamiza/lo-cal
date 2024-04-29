@@ -2,6 +2,8 @@ import {
   createContext,
   useContext,
   useReducer,
+  useCallback,
+  useEffect,
   ReactNode,
   PropsWithChildren,
 } from "react";
@@ -57,28 +59,35 @@ export default function StatusMessagesProvider({
     [],
   );
 
-  const removeMessage = (index: number) => {
+  const removeMessage = useCallback((index: number) => {
     dispatch(["remove", index]);
-  };
+  }, []);
 
-  const addMessage = (message: StatusMessage) => {
+  const addMessage = useCallback((message: StatusMessage) => {
     dispatch(["add", message]);
+  }, []);
 
-    if (message.autoDisposeTimeout === false) {
-      return;
-    }
-
-    const timeout = message.autoDisposeTimeout || 3000;
-    const index = messages.length;
-
-    setTimeout(() => {
-      removeMessage(index);
-    }, timeout);
-  };
-
-  const removeAll = () => {
+  const removeAll = useCallback(() => {
     dispatch(["clear"]);
-  };
+  }, []);
+
+  useEffect(() => {
+    const timeouts: number[] = [];
+
+    messages.forEach((message, index) => {
+      if (message.autoDisposeTimeout === false) {
+        return;
+      }
+
+      const duration = message.autoDisposeTimeout || 3000;
+
+      timeouts.push(setTimeout(() => removeMessage(index), duration));
+    });
+
+    return () => {
+      timeouts.forEach((timeout) => clearTimeout(timeout));
+    };
+  }, [messages, removeMessage]);
 
   return (
     <StatusMessagesContext.Provider

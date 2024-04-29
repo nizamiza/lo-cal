@@ -84,7 +84,15 @@ export async function updateEvent(event: Event): Promise<void> {
   const tx = db.transaction(Store.events, "readwrite");
   const store = tx.objectStore(Store.events);
 
-  await wrapRequest(store.put(event, event.id));
+  const cursor = await wrapRequest(
+    store.openCursor(IDBKeyRange.only(event.id)),
+  );
+
+  if (!cursor) {
+    throw new Error("Event not found.");
+  }
+
+  await wrapRequest(cursor.update(event));
   await wrapTransaction(tx);
 }
 

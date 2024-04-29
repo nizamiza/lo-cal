@@ -1,3 +1,4 @@
+import { MouseEvent } from "react";
 import { Event } from "@/event/types";
 import MapPin from "@/icons/map-pin";
 import LinkIcon from "@/icons/link";
@@ -10,13 +11,19 @@ type EventCardProps = {
 export default function EventCard({ event }: EventCardProps) {
   const { setEvent } = useEventModalContext();
 
+  const handleClick = (e: MouseEvent) => {
+    e.stopPropagation();
+    setEvent(event);
+  };
+
   return (
     <article
-      onClick={() => setEvent(event)}
+      onClick={handleClick}
       className={`
-        pointer-events-none @[4rem]:pointer-events-auto @[4rem]:rounded-sm
-        @[4rem]:surface [--base-color:var(--base-light)] @[4rem]:shadow-md
-        grid gap-1 @[4rem]:p-2 @xs:gap-2 @sm:gap-4 @xs:rounded-md
+        pointer-events-none @[8rem]:pointer-events-auto @[8rem]:rounded-sm
+        @[8rem]:cursor-pointer
+        @[8rem]:surface [--base-color:var(--base-light)] @[8rem]:shadow-md
+        grid gap-1 @[8rem]:p-2 @xs:gap-2 @sm:gap-4 @xs:rounded-md
       `}
     >
       <h3
@@ -28,7 +35,7 @@ export default function EventCard({ event }: EventCardProps) {
       >
         <span
           className={`
-            inline-block @[4rem]:hidden w-[0.5lh] mr-[0.125rem] mb-[0.125lh]
+            inline-block @[8rem]:hidden w-[0.5lh] mr-[0.125rem] mb-[0.125lh]
             aspect-square bg-current rounded-full
           `}
           role="presentation"
@@ -40,7 +47,7 @@ export default function EventCard({ event }: EventCardProps) {
       </p>
       <footer
         className={`
-          hidden @[4rem]:flex flex-wrap items-center gap-1 text-[0.625rem]
+          hidden @[8rem]:flex flex-wrap items-center gap-1 text-[0.625rem]
           @xs:text-sm @xs:gap-2
           @sm:text-base @sm:gap-4
         `}

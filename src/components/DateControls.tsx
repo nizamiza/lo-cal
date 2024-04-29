@@ -44,9 +44,9 @@ export default function DateControls() {
             : {
                 month: "long",
                 year: "numeric",
-              }
+              },
       ).format(new Date(lastViewedDate)),
-    [lastViewedDate, viewMode]
+    [lastViewedDate, viewMode],
   );
 
   return (

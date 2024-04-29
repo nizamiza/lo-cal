@@ -19,7 +19,7 @@ export default function WeekDaysHeader({
     <header
       className={twMerge(
         "surface [--surface-alpha:0.8] backdrop-blur-sm rounded-full sticky top-4 z-50",
-        className
+        className,
       )}
     >
       <h2 className="sr-only">Weekdays</h2>
@@ -30,7 +30,7 @@ export default function WeekDaysHeader({
             grid grid-cols-[1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr]
             justify-items-center items-center py-2 sm:py-3 
           `,
-          listClassName
+          listClassName,
         )}
       >
         {weekDays.map((day, index) => (

@@ -38,7 +38,7 @@ export default function useCalendarViewModel() {
 
       return eventsOnDate;
     },
-    [events]
+    [events],
   );
 
   return [currentDateInfo, getEventsOnDate] as const;

@@ -222,6 +222,8 @@
     }
 
     & > .modal-content {
+      display: flex;
+      flex-direction: column;
       padding: var(--py) var(--px);
     }
 

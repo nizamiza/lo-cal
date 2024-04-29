@@ -45,7 +45,7 @@ export default function Modal({
       <div className="modal-content">{children}</div>
       {actions && (
         <>
-          <hr className="separator horizontal" />
+          <hr className="separator horizontal my-4" />
           <footer>{actions}</footer>
         </>
       )}
