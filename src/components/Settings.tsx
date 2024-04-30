@@ -7,7 +7,8 @@ import {
   DEFAULT_PREFERENCES,
 } from "@/contexts/Preferences";
 import { useStatusMessages } from "@/contexts/StatusMessages";
-import { useEventsContext } from "@/contexts/EventsContext";
+import { useEvents } from "@/contexts/Events";
+import { useNav } from "@/contexts/Nav";
 import { WEEK_DAYS } from "@/hooks/useWeekDays";
 import useDeleteEvent from "@/hooks/useDeleteEvent";
 import SettingsIcon from "@/icons/settings";
@@ -84,6 +85,11 @@ const SettingFieldProps = {
       label: day,
     })),
   },
+  "show-time": {
+    type: "checkbox",
+    label: "Show time",
+    disabled: false,
+  },
 } satisfies Record<string, SettingFormFieldProps>;
 
 const NestedSettingFieldProps = {
@@ -116,10 +122,11 @@ type NestedSettingFieldKey = keyof typeof NestedSettingFieldProps;
 const FORM_ID = "settings-form";
 
 export default function Settings({ className }: SettingsProps) {
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const { settingsIsOpen, closeSettings, openSettings } = useNav();
 
-  const { events, refreshEvents } = useEventsContext();
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const { events, refreshEvents } = useEvents();
   const deleteEvent = useDeleteEvent();
 
   const { preferences, setPreferences, resetPreferences } = usePreferences();
@@ -132,7 +139,7 @@ export default function Settings({ className }: SettingsProps) {
 
   const handleClose = () => {
     setIsDeleting(false);
-    setIsOpen(false);
+    closeSettings();
   };
 
   const handleChange = (key: string, subKey?: string) => {
@@ -160,7 +167,7 @@ export default function Settings({ className }: SettingsProps) {
       content: "Settings saved!",
     });
 
-    setIsOpen(false);
+    closeSettings();
   };
 
   const handleReset = () => {
@@ -172,7 +179,7 @@ export default function Settings({ className }: SettingsProps) {
       content: "Settings were reset.",
     });
 
-    setIsOpen(false);
+    closeSettings();
   };
 
   const handleDeleteAllEvents = async () => {
@@ -186,7 +193,7 @@ export default function Settings({ className }: SettingsProps) {
     });
 
     refreshEvents();
-    setIsOpen(false);
+    closeSettings();
   };
 
   useEffect(() => {
@@ -199,12 +206,12 @@ export default function Settings({ className }: SettingsProps) {
         className="btn p-1.5"
         aria-label="Open settings"
         type="button"
-        onClick={() => setIsOpen(true)}
+        onClick={openSettings}
       >
         <SettingsIcon />
       </button>
       <Modal
-        open={isOpen}
+        open={settingsIsOpen}
         onClose={handleClose}
         title={isDeleting ? "Delete all events" : "Settings"}
         actions={
@@ -247,7 +254,7 @@ export default function Settings({ className }: SettingsProps) {
               <button
                 type="button"
                 className="btn bordered"
-                onClick={() => setIsOpen(false)}
+                onClick={handleClose}
               >
                 Cancel
               </button>

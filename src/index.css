@@ -257,6 +257,9 @@
 
     & > header {
       --surface-alpha: 0.9;
+
+      @apply backdrop-blur-sm;
+
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -270,6 +273,9 @@
 
     & > footer {
       --surface-alpha: 0.9;
+
+      @apply backdrop-blur-sm;
+
       display: flex;
       justify-content: center;
       flex-wrap: wrap;

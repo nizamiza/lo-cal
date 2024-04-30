@@ -1,27 +1,29 @@
 import { createContext, useContext, useState, PropsWithChildren } from "react";
-import { Event } from "@/event/types";
 import EventModal from "@/components/EventModal";
+import { Event } from "@/event/types";
 import { noop } from "@/shared/utils";
 
 type EventModalContextType = {
   event: Event | null;
   setEvent: (event: Event | null) => void;
   openModal: () => void;
+  closeModal: () => void;
+  isOpen: boolean;
 };
 
 const EventModalContext = createContext<EventModalContextType>({
   event: null,
   setEvent: noop,
   openModal: noop,
+  closeModal: noop,
+  isOpen: false,
 });
 
-export function useEventModalContext() {
+export function useEventModal() {
   return useContext(EventModalContext);
 }
 
-export default function EventModalContextProvider({
-  children,
-}: PropsWithChildren) {
+export default function EventModalProvider({ children }: PropsWithChildren) {
   const [isOpen, setIsOpen] = useState(false);
   const [event, setEvent] = useState<Event | null>(null);
 
@@ -31,10 +33,20 @@ export default function EventModalContextProvider({
     setEvent(null);
   };
 
+  const modalIsOpen = !!event || isOpen;
+
   return (
-    <EventModalContext.Provider value={{ event, setEvent, openModal }}>
+    <EventModalContext.Provider
+      value={{
+        event,
+        setEvent,
+        openModal,
+        closeModal: onClose,
+        isOpen: modalIsOpen,
+      }}
+    >
       {children}
-      <EventModal open={!!event || isOpen} event={event} onClose={onClose} />
+      <EventModal open={modalIsOpen} event={event} onClose={onClose} />
     </EventModalContext.Provider>
   );
 }

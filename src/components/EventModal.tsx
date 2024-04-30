@@ -1,4 +1,8 @@
 import { useState, useEffect, FormEvent } from "react";
+import Modal from "@/components/Modal";
+import FormField from "@/components/FormField";
+import { usePreference } from "@/contexts/Preferences";
+import { useEvents } from "@/contexts/Events";
 import {
   Event as CalendarEvent,
   EventCreateInput as CalendarEventCreateInput,
@@ -6,10 +10,6 @@ import {
 import useAddEvent from "@/hooks/useAddEvent";
 import useDeleteEvent from "@/hooks/useDeleteEvent";
 import useUpdateEvent from "@/hooks/useUpdateEvent";
-import Modal from "@/components/Modal";
-import FormField from "@/components/FormField";
-import { usePreference } from "@/contexts/Preferences";
-import { useEventsContext } from "@/contexts/EventsContext";
 import Trash from "@/icons/trash";
 
 type EventModalProps = {
@@ -35,7 +35,7 @@ function getEventDefaultValues(
 }
 
 export default function EventModal({ event, open, onClose }: EventModalProps) {
-  const { refreshEvents } = useEventsContext();
+  const { refreshEvents } = useEvents();
 
   const [lastViewedDate] = usePreference("last-viewed-date");
 

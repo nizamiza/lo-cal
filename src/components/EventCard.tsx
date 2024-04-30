@@ -3,7 +3,7 @@ import { Event } from "@/event/types";
 import MapPin from "@/icons/map-pin";
 import LinkIcon from "@/icons/link";
 import { usePreference } from "@/contexts/Preferences";
-import { useEventModalContext } from "@/contexts/EventModalContext";
+import { useEventModal } from "@/contexts/EventModal";
 import { cn } from "@/shared/utils";
 
 type EventCardProps = {
@@ -12,7 +12,7 @@ type EventCardProps = {
 
 export default function EventCard({ event }: EventCardProps) {
   const [viewMode] = usePreference("view-mode");
-  const { setEvent } = useEventModalContext();
+  const { setEvent } = useEventModal();
 
   const handleClick = (e: MouseEvent) => {
     e.stopPropagation();

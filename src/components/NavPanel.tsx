@@ -1,14 +1,16 @@
 import Plus from "@/icons/plus";
 import ViewModeSelect from "@/components/ViewModeSelect";
 import DateControls from "@/components/DateControls";
-import { useEventModalContext } from "@/contexts/EventModalContext";
+import { useEventModal } from "@/contexts/EventModal";
 import { cn } from "@/shared/utils";
 
 export default function NavPanel() {
-  const { openModal } = useEventModalContext();
+  const { openModal } = useEventModal();
 
   return (
     <nav
+      id="nav-panel"
+      aria-label="Navigation panel"
       className={cn(
         "surface [--surface-alpha:0.8] bordered [--border-alpha:0.15]",
         "sticky bottom-5 mt-auto mx-auto max-w-[calc(100vw-2rem)] z-90",

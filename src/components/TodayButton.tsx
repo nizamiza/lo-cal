@@ -1,22 +1,18 @@
 import { HTMLAttributes } from "react";
-import { usePreference } from "@/contexts/Preferences";
+import { useNav } from "@/contexts/Nav";
 import { cn } from "@/shared/utils";
 
 type TodayButtonProps = HTMLAttributes<HTMLButtonElement>;
 
 export default function TodayButton({ className, ...props }: TodayButtonProps) {
-  const [, setLastViewedDate] = usePreference("last-viewed-date");
-
-  const handleClick = () => {
-    setLastViewedDate(new Date().toISOString());
-  };
+  const { goToToday } = useNav();
 
   return (
     <button
       title="Go to today"
       className={cn("btn surface text-sm sm:text-base", className)}
       {...props}
-      onClick={handleClick}
+      onClick={goToToday}
       type="button"
     >
       <span>

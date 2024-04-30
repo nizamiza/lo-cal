@@ -3,7 +3,7 @@ import { Event } from "@/event/types";
 import CalendarDayDateInfo from "@/components/CalendarDayDateInfo";
 import CalendarDayEvents from "@/components/CalendarDayEvents";
 import { usePreference } from "@/contexts/Preferences";
-import { useEventModalContext } from "@/contexts/EventModalContext";
+import { useEventModal } from "@/contexts/EventModal";
 import { cn } from "@/shared/utils";
 
 type CalendarDayProps = {
@@ -20,7 +20,7 @@ export default function CalendarDay({
   const [, setLastViewedDate] = usePreference("last-viewed-date");
   const [viewMode, setViewMode] = usePreference("view-mode");
 
-  const { openModal } = useEventModalContext();
+  const { openModal } = useEventModal();
 
   const isToday = new Date().toDateString() === date.toDateString();
 
@@ -41,12 +41,20 @@ export default function CalendarDay({
       className={cn(
         "surface @container cursor-pointer",
         "[--border-alpha:0.1] dark:[--border-alpha:0.15]",
-        isToday
-          ? "[box-shadow:var(--shadow)] [--border-alpha:1] dark:shadow-none dark:border-[1.5px] dark:[--border-alpha:0.5]"
-          : "bordered [--surface-alpha:0.35]",
-        viewMode === "day" && "[--shadow-offset:0.75rem]",
-        "flex flex-col justify-start items-start gap-1 sm:gap-2 h-full",
+        "flex flex-col justify-start items-start gap-1 @sm:gap-2 h-full",
         "p-1 sm:p-2 aspect-square rounded-sm sm:rounded-md md:rounded-xl",
+        ...(isToday
+          ? [
+              "[box-shadow:var(--shadow)] [--border-alpha:1]",
+              "dark:shadow-none dark:border-[1.5px] dark:[--border-alpha:0.5]",
+            ]
+          : ["bordered [--surface-alpha:0.35]"]),
+        ...(viewMode === "day"
+          ? [
+              "[--shadow-offset:0.25rem] @sm:[--shadow-offset:0.5rem]",
+              "@md:[--shadow-offset:0.75rem]",
+            ]
+          : []),
         className
       )}
     >

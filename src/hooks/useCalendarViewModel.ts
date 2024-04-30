@@ -1,9 +1,9 @@
 import { useCallback, useMemo } from "react";
 import { usePreference } from "@/contexts/Preferences";
-import { useEventsContext } from "@/contexts/EventsContext";
+import { useEvents } from "@/contexts/Events";
 
 export default function useCalendarViewModel() {
-  const { events } = useEventsContext();
+  const { events } = useEvents();
   const [lastViewedDate] = usePreference("last-viewed-date");
 
   const currentDateInfo = useMemo(() => {
@@ -38,7 +38,7 @@ export default function useCalendarViewModel() {
 
       return eventsOnDate;
     },
-    [events],
+    [events]
   );
 
   return [currentDateInfo, getEventsOnDate] as const;

@@ -1,33 +1,15 @@
 import { useMemo } from "react";
-import Chevron from "@/icons/chevron";
 import { usePreference } from "@/contexts/Preferences";
+import { useNav } from "@/contexts/Nav";
 import useWeekNumber from "@/hooks/useWeekNumber";
+import Chevron from "@/icons/chevron";
 import { cn } from "@/shared/utils";
 
 export default function DateControls() {
   const [viewMode] = usePreference("view-mode");
-  const [lastViewedDate, setLastViewedDate] = usePreference("last-viewed-date");
+  const [lastViewedDate] = usePreference("last-viewed-date");
 
   const weekNumber = useWeekNumber(lastViewedDate);
-
-  const handleDateChange = (direction: "previous" | "next") => {
-    const date = new Date(lastViewedDate);
-    const coefficient = direction === "previous" ? -1 : 1;
-
-    switch (viewMode) {
-      case "day":
-        date.setDate(date.getDate() + 1 * coefficient);
-        break;
-      case "week":
-        date.setDate(date.getDate() + 7 * coefficient);
-        break;
-      case "month":
-        date.setMonth(date.getMonth() + 1 * coefficient);
-        break;
-    }
-
-    setLastViewedDate(date.toISOString());
-  };
 
   const formattedDate = useMemo(
     () =>
@@ -49,6 +31,8 @@ export default function DateControls() {
       ).format(new Date(lastViewedDate)),
     [lastViewedDate, viewMode]
   );
+
+  const { handleDateChange } = useNav();
 
   return (
     <div

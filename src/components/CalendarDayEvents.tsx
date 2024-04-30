@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Event } from "@/event/types";
 import EventCard from "@/components/EventCard";
 import { usePreference } from "@/contexts/Preferences";
+import { cn } from "@/shared/utils";
 
 type CalendarDayEventsProps = {
   events: Event[];
@@ -54,7 +55,9 @@ export default function CalendarDayEvents({ events }: CalendarDayEventsProps) {
       ))}
       {truncatedEventCount > 0 && (
         <li
-          className="text-[0.375rem] @[3rem]:text-[0.5rem] @xs:text-xs text-center"
+          className={cn(
+            "text-[0.375rem] @[3rem]:text-[0.5rem] @xs:text-xs text-center"
+          )}
           title={`There are ${truncatedEventCount} more events`}
         >
           <span className="hidden @[4rem]:inline">+</span>

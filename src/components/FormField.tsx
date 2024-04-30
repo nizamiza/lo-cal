@@ -80,7 +80,7 @@ export default function FormField({
             type={type}
             inputMode={inputMode}
             onChange={handleChange}
-            value={value}
+            value={isDateType ? value?.slice(0, 16) : value}
             checked={checked}
           />
           {type === "checkbox" && value && (
