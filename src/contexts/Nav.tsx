@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, PropsWithChildren } from "react";
-import { usePreference } from "@/contexts/Preferences";
+import { usePreference, ViewMode } from "@/contexts/Preferences";
 import { useEventModal } from "@/contexts/EventModal";
 import { noop } from "@/shared/utils";
 
@@ -8,6 +8,7 @@ export type DateChangeDirection = "previous" | "next";
 type NavContextType = {
   handleDateChange: (direction: DateChangeDirection) => void;
   goToToday: () => void;
+  setViewMode: (mode: ViewMode) => void;
   openEventModal: () => void;
   openSettings: () => void;
   openSearch: () => void;
@@ -22,6 +23,7 @@ type NavContextType = {
 const NavContext = createContext<NavContextType>({
   handleDateChange: noop,
   goToToday: noop,
+  setViewMode: noop,
   openEventModal: noop,
   openSettings: noop,
   openSearch: noop,
@@ -39,7 +41,7 @@ export default function NavProvider({ children }: PropsWithChildren) {
   const [settingsIsOpen, setSettingsIsOpen] = useState(false);
   const [searchIsOpen, setSearchIsOpen] = useState(false);
 
-  const [viewMode] = usePreference("view-mode");
+  const [viewMode, setViewMode] = usePreference("view-mode");
   const [lastViewedDate, setLastViewedDate] = usePreference("last-viewed-date");
 
   const eventModal = useEventModal();
@@ -88,6 +90,7 @@ export default function NavProvider({ children }: PropsWithChildren) {
       value={{
         handleDateChange,
         goToToday,
+        setViewMode,
         openSettings,
         openSearch,
         closeSettings,

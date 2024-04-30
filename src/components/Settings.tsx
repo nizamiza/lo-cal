@@ -50,7 +50,7 @@ const SettingFieldProps = {
   },
   "base-color": {
     type: "text",
-    label: "Base color",
+    label: "Color theme",
     element: "select",
     options: COLOR_OPTIONS.map((color) => ({ value: color, label: color })),
     disabled: false,

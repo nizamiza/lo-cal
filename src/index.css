@@ -15,7 +15,7 @@
   -moz-osx-font-smoothing: grayscale;
 
   --day-min-height: calc(80vh - 4rem);
-  --base-border-width: 1.5px;
+  --base-border-width: 1px;
 
   --base-color: hotpink;
   --base-color-mix-space: oklab;
@@ -50,6 +50,10 @@
 
   @media (prefers-color-scheme: dark) {
     --background-color-color-mix: black 90%;
+  }
+
+  @media (min-width: 640px) {
+    --base-border-width: 1.5px;
   }
 }
 
@@ -187,6 +191,7 @@
     & > legend {
       font-weight: 500;
       padding-inline: 0.25rem;
+      width: fit-content;
     }
   }
 }

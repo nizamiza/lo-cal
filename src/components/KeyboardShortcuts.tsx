@@ -3,6 +3,7 @@ import Modal from "@/components/Modal";
 import CommandIcon from "@/icons/command";
 import { usePreferences, PreferenceKey } from "@/contexts/Preferences";
 import { useNav, DateChangeDirection } from "@/contexts/Nav";
+import { cn } from "@/shared/utils";
 
 const KEYBOARD_SHORTCUTS = {
   D: {
@@ -47,22 +48,37 @@ export default function KeyboardShortcuts() {
   const [isOpen, setIsOpen] = useState(false);
 
   const { setPreference } = usePreferences();
-  const { handleDateChange, openEventModal, goToToday, openSettings } =
-    useNav();
+  const {
+    handleDateChange,
+    openEventModal,
+    goToToday,
+    openSettings,
+    openSearch,
+    eventModalIsOpen,
+    settingsIsOpen,
+    searchIsOpen,
+  } = useNav();
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      const key = (
-        event.key.length === 1 ? event.key.toUpperCase() : event.key
-      ) as keyof typeof KEYBOARD_SHORTCUTS;
+      if ([eventModalIsOpen, settingsIsOpen, searchIsOpen].some(Boolean)) {
+        return;
+      }
 
-      const shortcut = KEYBOARD_SHORTCUTS[key];
+      const key = event.key.length === 1 ? event.key.toUpperCase() : event.key;
+
+      if (event.ctrlKey && key === "K") {
+        openSearch();
+        return;
+      }
+
+      const shortcut =
+        KEYBOARD_SHORTCUTS[key as keyof typeof KEYBOARD_SHORTCUTS];
 
       if (!shortcut) {
         return;
       }
 
-      event.preventDefault();
       const [category, action, value] = shortcut.action.split(":");
 
       if (category === "preference") {
@@ -101,11 +117,15 @@ export default function KeyboardShortcuts() {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [
+    eventModalIsOpen,
+    settingsIsOpen,
+    searchIsOpen,
     setPreference,
     handleDateChange,
     goToToday,
     openEventModal,
     openSettings,
+    openSearch,
   ]);
 
   return (
@@ -135,13 +155,15 @@ export default function KeyboardShortcuts() {
         }
       >
         <p>Enhance your navigation with these shortcuts!</p>
-        <ul className="flex flex-col gap-2">
+        <ul
+          className={cn(
+            "flex flex-col gap-2",
+            "[&>li]:grid [&>li]:grid-cols-[6ch_1fr] [&>li]:gap-4 [&>li]:items-start"
+          )}
+        >
           {Object.entries(KEYBOARD_SHORTCUTS).map(
             ([key, { label, action }]) => (
-              <li
-                key={action}
-                className="grid grid-cols-[2ch_1fr] gap-4 items-start"
-              >
+              <li key={action}>
                 <strong>
                   <kbd>
                     {key.startsWith("Arrow")
@@ -155,6 +177,12 @@ export default function KeyboardShortcuts() {
               </li>
             )
           )}
+          <li>
+            <strong>
+              <kbd>Ctrl+K</kbd>
+            </strong>{" "}
+            Open search
+          </li>
         </ul>
       </Modal>
     </>

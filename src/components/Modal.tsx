@@ -6,6 +6,7 @@ type ModalProps = HTMLAttributes<HTMLDialogElement> & {
   open?: boolean;
   actions?: ReactNode;
   onClose?: () => void;
+  "sr-only-title"?: boolean;
 };
 
 export default function Modal({
@@ -15,6 +16,7 @@ export default function Modal({
   title,
   actions,
   onClose,
+  "sr-only-title": srOnlyTitle,
   ...props
 }: ModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -34,19 +36,23 @@ export default function Modal({
       onClose={onClose}
       {...props}
     >
-      <header>
-        {title && <h2>{title}</h2>}
-        <form method="dialog">
-          <button aria-label="Close" type="submit">
-            <Close />
-          </button>
-        </form>
-      </header>
+      {srOnlyTitle ? (
+        <h2 className="sr-only">{title}</h2>
+      ) : (
+        <header>
+          {title && <h2>{title}</h2>}
+          <form method="dialog">
+            <button aria-label="Close" type="submit">
+              <Close />
+            </button>
+          </form>
+        </header>
+      )}
       <div className="modal-content">{children}</div>
       {actions && (
         <>
           <hr className="separator horizontal my-4" />
-          <footer>{actions}</footer>
+          <footer className="modal-footer">{actions}</footer>
         </>
       )}
     </dialog>
