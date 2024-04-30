@@ -4,6 +4,8 @@
 the browser using the [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
 and [`indexedDB`](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) APIs.
 
+Website: [lo-cal.fly.dev](https://lo-cal.fly.dev)
+
 ## Features
 
 -   Add, edit, and delete events
