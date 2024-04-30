@@ -16,6 +16,7 @@ export type PreferenceMap = {
   timezone: string;
   "last-viewed-date": string;
   "first-day-of-week": 0 | 1 | 2 | 3 | 4 | 5 | 6;
+  "show-time": boolean;
   "date-time-format": Pick<
     Intl.DateTimeFormatOptions,
     "dateStyle" | "timeStyle"
@@ -29,6 +30,7 @@ export const DEFAULT_PREFERENCES: PreferenceMap = {
   timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   "last-viewed-date": new Date().toISOString(),
   "first-day-of-week": 1,
+  "show-time": false,
   "date-time-format": {
     dateStyle: "medium",
     timeStyle: "short",
@@ -112,9 +114,19 @@ function resetLocalPreferences(): PreferenceMap {
 
 function setBaseColor(color: string): void {
   document.documentElement.style.setProperty("--base-color", color);
+
+  const themeColorReference = document.getElementById("theme-color-reference");
+
+  if (!themeColorReference) {
+    return;
+  }
+
+  const themeColor =
+    getComputedStyle(themeColorReference).getPropertyValue("background-color");
+
   document.head
     .querySelector(`meta[name="theme-color"]`)
-    ?.setAttribute("content", color);
+    ?.setAttribute("content", themeColor);
 }
 
 export default function PreferencesProvider({ children }: PropsWithChildren) {

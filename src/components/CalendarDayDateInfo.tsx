@@ -23,7 +23,8 @@ export default function CalendarDayDateInfo({
       >
         <span
           className={cn(
-            "text-[0.5rem] @[4rem]:text-[0.675rem] @xs:text-xs @sm:text-sm @md:text-base",
+            "text-[0.5rem] @[4rem]:text-[0.675rem] @xs:text-xs @sm:text-sm",
+            "@md:text-base",
             isToday && "font-bold"
           )}
           role="presentation"

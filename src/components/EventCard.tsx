@@ -1,27 +1,41 @@
-import { MouseEvent } from "react";
-import { Event } from "@/event/types";
+import { UIEvent } from "react";
+import { Event as CalendarEvent } from "@/event/types";
 import MapPin from "@/icons/map-pin";
 import LinkIcon from "@/icons/link";
 import { usePreference } from "@/contexts/Preferences";
-import { useEventModalContext } from "@/contexts/EventModalContext";
+import { useEventModal } from "@/contexts/EventModal";
 import { cn } from "@/shared/utils";
 
 type EventCardProps = {
-  event: Event;
+  event: CalendarEvent;
+  onClick?: () => void;
 };
 
-export default function EventCard({ event }: EventCardProps) {
+export default function EventCard({ event, onClick }: EventCardProps) {
   const [viewMode] = usePreference("view-mode");
-  const { setEvent } = useEventModalContext();
+  const { setEvent } = useEventModal();
 
-  const handleClick = (e: MouseEvent) => {
+  const handleClick = (e: UIEvent) => {
     e.stopPropagation();
-    setEvent(event);
+    e.preventDefault();
+
+    if (onClick) {
+      onClick();
+    } else {
+      setEvent(event);
+    }
   };
 
   return (
     <article
+      data-id={event.id}
       onClick={handleClick}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          handleClick(e);
+        }
+      }}
+      tabIndex={0}
       className={cn(
         viewMode !== "day" && "[--border-width:1px]",
         "pointer-events-none @[8rem]:pointer-events-auto @[8rem]:cursor-pointer",

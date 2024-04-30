@@ -8,6 +8,11 @@ function App() {
   return (
     <Preferences>
       <StatusMessages>
+        <div
+          className="sr-only surface"
+          role="presentation"
+          id="theme-color-reference"
+        />
         <main
           className={`
             @container/main

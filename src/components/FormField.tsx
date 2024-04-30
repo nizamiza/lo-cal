@@ -26,7 +26,7 @@ export type FormFieldProps = {
   checked?: boolean;
   onChange?: (value: string, checked: boolean) => void;
   inputMode?: InputAttributes["inputMode"];
-  type?: "text" | "number" | "date" | "datetime-local" | "checkbox";
+  type?: "text" | "number" | "date" | "datetime-local" | "checkbox" | "search";
   options?: FormFieldSelectOption[];
 };
 
@@ -80,7 +80,7 @@ export default function FormField({
             type={type}
             inputMode={inputMode}
             onChange={handleChange}
-            value={value}
+            value={isDateType ? value?.slice(0, 16) : value}
             checked={checked}
           />
           {type === "checkbox" && value && (

@@ -1,15 +1,15 @@
-import { MouseEvent } from "react";
-import { Event } from "@/event/types";
+import { UIEvent } from "react";
+import { Event as CalendarEvent } from "@/event/types";
 import CalendarDayDateInfo from "@/components/CalendarDayDateInfo";
 import CalendarDayEvents from "@/components/CalendarDayEvents";
 import { usePreference } from "@/contexts/Preferences";
-import { useEventModalContext } from "@/contexts/EventModalContext";
+import { useEventModal } from "@/contexts/EventModal";
 import { cn } from "@/shared/utils";
 
 type CalendarDayProps = {
   className?: string;
   date: Date;
-  events?: Event[];
+  events?: CalendarEvent[];
 };
 
 export default function CalendarDay({
@@ -20,11 +20,11 @@ export default function CalendarDay({
   const [, setLastViewedDate] = usePreference("last-viewed-date");
   const [viewMode, setViewMode] = usePreference("view-mode");
 
-  const { openModal } = useEventModalContext();
+  const { openModal } = useEventModal();
 
   const isToday = new Date().toDateString() === date.toDateString();
 
-  const handleClick = (event: MouseEvent) => {
+  const handleClick = (event: UIEvent) => {
     event.preventDefault();
 
     if (viewMode !== "day") {
@@ -38,15 +38,30 @@ export default function CalendarDay({
   return (
     <div
       onClick={handleClick}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          handleClick(e);
+        }
+      }}
+      tabIndex={0}
       className={cn(
         "surface @container cursor-pointer",
         "[--border-alpha:0.1] dark:[--border-alpha:0.15]",
-        isToday
-          ? "[box-shadow:var(--shadow)] [--border-alpha:1] dark:shadow-none dark:border-[1.5px] dark:[--border-alpha:0.5]"
-          : "bordered [--surface-alpha:0.35]",
-        viewMode === "day" && "[--shadow-offset:0.75rem]",
-        "flex flex-col justify-start items-start gap-1 sm:gap-2 h-full",
+        "flex flex-col justify-start items-start gap-1 @sm:gap-2 h-full",
         "p-1 sm:p-2 aspect-square rounded-sm sm:rounded-md md:rounded-xl",
+        ...(isToday
+          ? [
+              "[box-shadow:var(--shadow)] [--border-alpha:1]",
+              "focus-visible:[box-shadow:var(--shadow),0_0_0.75em_var(--base-color)]",
+              "dark:shadow-none dark:border-[1.5px] dark:[--border-alpha:0.5]",
+            ]
+          : ["bordered [--surface-alpha:0.35]"]),
+        ...(viewMode === "day"
+          ? [
+              "[--shadow-offset:0.25rem] @sm:[--shadow-offset:0.5rem]",
+              "@md:[--shadow-offset:0.75rem]",
+            ]
+          : []),
         className
       )}
     >
