@@ -10,10 +10,10 @@ export default function NavPanel() {
   return (
     <nav
       className={cn(
-        "surface [--surface-alpha:0.8]",
+        "surface [--surface-alpha:0.8] bordered [--border-alpha:0.15]",
         "sticky bottom-5 mt-auto mx-auto max-w-[calc(100vw-2rem)] z-90",
         "flex items-center justify-center gap-3 @[18rem]:gap-3.5",
-        "py-2 px-4 rounded-full backdrop-blur-md",
+        "py-2 px-4 rounded-full backdrop-blur-sm",
         "@[18rem]:py-3 @[18rem]:px-5 @sm:py-4 @sm:px-6"
       )}
     >

@@ -6,13 +6,16 @@ import { logError } from "@/shared/utils";
 export default function useDeleteEvent() {
   const { addMessage } = useStatusMessages();
 
-  return async (event: Event) => {
+  return async (event: Event, silent?: boolean) => {
     try {
       await deleteEvent(event);
-      addMessage({
-        type: "success",
-        content: "Event deleted successfully.",
-      });
+
+      if (!silent) {
+        addMessage({
+          type: "success",
+          content: "Event deleted successfully.",
+        });
+      }
     } catch (error) {
       logError(error, () => {
         addMessage({

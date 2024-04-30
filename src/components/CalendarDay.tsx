@@ -3,6 +3,7 @@ import { Event } from "@/event/types";
 import CalendarDayDateInfo from "@/components/CalendarDayDateInfo";
 import CalendarDayEvents from "@/components/CalendarDayEvents";
 import { usePreference } from "@/contexts/Preferences";
+import { useEventModalContext } from "@/contexts/EventModalContext";
 import { cn } from "@/shared/utils";
 
 type CalendarDayProps = {
@@ -19,6 +20,8 @@ export default function CalendarDay({
   const [, setLastViewedDate] = usePreference("last-viewed-date");
   const [viewMode, setViewMode] = usePreference("view-mode");
 
+  const { openModal } = useEventModalContext();
+
   const isToday = new Date().toDateString() === date.toDateString();
 
   const handleClick = (event: MouseEvent) => {
@@ -27,6 +30,8 @@ export default function CalendarDay({
     if (viewMode !== "day") {
       setLastViewedDate(date.toISOString());
       setViewMode("day");
+    } else {
+      openModal();
     }
   };
 
@@ -34,11 +39,12 @@ export default function CalendarDay({
     <div
       onClick={handleClick}
       className={cn(
-        "surface @container dark:border-[1.5px] dark:[--border-alpha:0.15]",
-        viewMode !== "day" ? "cursor-pointer" : "",
+        "surface @container cursor-pointer",
+        "[--border-alpha:0.1] dark:[--border-alpha:0.15]",
         isToday
-          ? "[--base-color:var(--base-dark)] [--surface-alpha:0.5]"
-          : "[--surface-alpha:0.35]",
+          ? "[box-shadow:var(--shadow)] [--border-alpha:1] dark:shadow-none dark:border-[1.5px] dark:[--border-alpha:0.5]"
+          : "bordered [--surface-alpha:0.35]",
+        viewMode === "day" && "[--shadow-offset:0.75rem]",
         "flex flex-col justify-start items-start gap-1 sm:gap-2 h-full",
         "p-1 sm:p-2 aspect-square rounded-sm sm:rounded-md md:rounded-xl",
         className

@@ -2,6 +2,7 @@ import { MouseEvent } from "react";
 import { Event } from "@/event/types";
 import MapPin from "@/icons/map-pin";
 import LinkIcon from "@/icons/link";
+import { usePreference } from "@/contexts/Preferences";
 import { useEventModalContext } from "@/contexts/EventModalContext";
 import { cn } from "@/shared/utils";
 
@@ -10,6 +11,7 @@ type EventCardProps = {
 };
 
 export default function EventCard({ event }: EventCardProps) {
+  const [viewMode] = usePreference("view-mode");
   const { setEvent } = useEventModalContext();
 
   const handleClick = (e: MouseEvent) => {
@@ -21,9 +23,9 @@ export default function EventCard({ event }: EventCardProps) {
     <article
       onClick={handleClick}
       className={cn(
+        viewMode !== "day" && "[--border-width:1px]",
         "pointer-events-none @[8rem]:pointer-events-auto @[8rem]:cursor-pointer",
-        "surface [--base-color:var(--base-light)] @[8rem]:shadow-md",
-        "dark:@[8rem]:border-[1.5px]",
+        "surface bordered [--base-color:var(--bc-cim)] @xs:shadow-md",
         "grid gap-1 @[8rem]:p-2 @xs:gap-2 @sm:gap-4",
         "rounded-md @xs:rounded-lg"
       )}
