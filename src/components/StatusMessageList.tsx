@@ -11,7 +11,7 @@ export default function StatusMessageList() {
       className={cn(
         "fixed left-[max(1rem,50%)] top-4 right-4 -translate-x-1/2 z-[999]",
         "grid gap-4 justify-items-center rounded-lg p-2",
-        messages.length > 0 ? "backdrop-blur-sm" : "pointer-events-none"
+        messages.length === 0 && "pointer-events-none"
       )}
     >
       <h2 className="sr-only">Status Messages</h2>

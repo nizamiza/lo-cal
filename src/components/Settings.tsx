@@ -1,5 +1,4 @@
 import { useState, useEffect, FormEvent } from "react";
-import { WEEK_DAYS } from "@/hooks/useWeekDays";
 import Modal from "@/components/Modal";
 import FormField, { FormFieldProps } from "@/components/FormField";
 import {
@@ -8,6 +7,9 @@ import {
   DEFAULT_PREFERENCES,
 } from "@/contexts/Preferences";
 import { useStatusMessages } from "@/contexts/StatusMessages";
+import { useEventsContext } from "@/contexts/EventsContext";
+import { WEEK_DAYS } from "@/hooks/useWeekDays";
+import useDeleteEvent from "@/hooks/useDeleteEvent";
 import SettingsIcon from "@/icons/settings";
 import { cn } from "@/shared/utils";
 
@@ -114,7 +116,11 @@ type NestedSettingFieldKey = keyof typeof NestedSettingFieldProps;
 const FORM_ID = "settings-form";
 
 export default function Settings({ className }: SettingsProps) {
+  const [isDeleting, setIsDeleting] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+
+  const { events, refreshEvents } = useEventsContext();
+  const deleteEvent = useDeleteEvent();
 
   const { preferences, setPreferences, resetPreferences } = usePreferences();
 
@@ -123,6 +129,11 @@ export default function Settings({ className }: SettingsProps) {
     useState<Record<string, any>>(preferences);
 
   const { addMessage } = useStatusMessages();
+
+  const handleClose = () => {
+    setIsDeleting(false);
+    setIsOpen(false);
+  };
 
   const handleChange = (key: string, subKey?: string) => {
     return (value: string, checked: boolean) => {
@@ -164,6 +175,20 @@ export default function Settings({ className }: SettingsProps) {
     setIsOpen(false);
   };
 
+  const handleDeleteAllEvents = async () => {
+    const eventCount = events.length;
+
+    await Promise.all(events.map((event) => deleteEvent(event, true)));
+
+    addMessage({
+      type: "warning",
+      content: `${eventCount} events were deleted.`,
+    });
+
+    refreshEvents();
+    setIsOpen(false);
+  };
+
   useEffect(() => {
     setFormValues(preferences);
   }, [preferences]);
@@ -171,7 +196,7 @@ export default function Settings({ className }: SettingsProps) {
   return (
     <div className={cn("flex items-center justify-center", className)}>
       <button
-        className="btn"
+        className="btn p-1.5"
         aria-label="Open settings"
         type="button"
         onClick={() => setIsOpen(true)}
@@ -180,74 +205,115 @@ export default function Settings({ className }: SettingsProps) {
       </button>
       <Modal
         open={isOpen}
-        onClose={() => setIsOpen(false)}
-        title="Settings"
+        onClose={handleClose}
+        title={isDeleting ? "Delete all events" : "Settings"}
         actions={
-          <>
-            <button
-              type="button"
-              className="btn bordered"
-              onClick={handleReset}
-            >
-              Reset
-            </button>
-            <button
-              type="submit"
-              form={FORM_ID}
-              className="btn surface ml-auto"
-            >
-              Save
-            </button>
-            <button
-              type="button"
-              className="btn bordered"
-              onClick={() => setIsOpen(false)}
-            >
-              Cancel
-            </button>
-          </>
+          isDeleting ? (
+            <>
+              <button
+                className="btn"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsDeleting(false);
+                }}
+                type="button"
+              >
+                Cancel
+              </button>
+              <button
+                className="btn"
+                onClick={handleDeleteAllEvents}
+                type="button"
+              >
+                Yes
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                type="button"
+                className="btn bordered"
+                onClick={handleReset}
+              >
+                Reset
+              </button>
+              <button
+                type="submit"
+                form={FORM_ID}
+                className="btn surface ml-auto"
+              >
+                Save
+              </button>
+              <button
+                type="button"
+                className="btn bordered"
+                onClick={() => setIsOpen(false)}
+              >
+                Cancel
+              </button>
+            </>
+          )
         }
       >
-        <form id={FORM_ID} onSubmit={handleSubmit}>
-          {Object.entries(DEFAULT_PREFERENCES)
-            .filter(
-              ([key]) => !SettingFieldProps[key as SettingFieldKey]?.disabled
-            )
-            .map(([key, value]) => {
-              if (key in NestedSettingFieldProps) {
-                const castedKey = key as NestedSettingFieldKey;
+        {isDeleting ? (
+          <p>
+            Are you sure you want to delete all events? This action cannot be
+            undone!
+          </p>
+        ) : (
+          <>
+            <form id={FORM_ID} onSubmit={handleSubmit}>
+              {Object.entries(DEFAULT_PREFERENCES)
+                .filter(
+                  ([key]) =>
+                    !SettingFieldProps[key as SettingFieldKey]?.disabled
+                )
+                .map(([key, value]) => {
+                  if (key in NestedSettingFieldProps) {
+                    const castedKey = key as NestedSettingFieldKey;
 
-                return (
-                  <fieldset key={`settings-item-${key}`}>
-                    <legend>{NestedSettingFieldProps[castedKey].legend}</legend>
-                    {Object.keys(value).map((subKey) => (
-                      <FormField
-                        key={`settings-item-${key}-${subKey}`}
-                        id={`${key}.${subKey}`}
-                        value={formValues[key][subKey]}
-                        checked={Boolean(formValues[key][subKey])}
-                        onChange={handleChange(key, subKey)}
-                        {...NestedSettingFieldProps[castedKey].fields[
-                          subKey as keyof (typeof NestedSettingFieldProps)[typeof castedKey]["fields"]
-                        ]}
-                      />
-                    ))}
-                  </fieldset>
-                );
-              }
+                    return (
+                      <fieldset key={`settings-item-${key}`}>
+                        <legend>
+                          {NestedSettingFieldProps[castedKey].legend}
+                        </legend>
+                        {Object.keys(value).map((subKey) => (
+                          <FormField
+                            key={`settings-item-${key}-${subKey}`}
+                            id={`${key}.${subKey}`}
+                            value={formValues[key][subKey]}
+                            checked={Boolean(formValues[key][subKey])}
+                            onChange={handleChange(key, subKey)}
+                            {...NestedSettingFieldProps[castedKey].fields[
+                              subKey as keyof (typeof NestedSettingFieldProps)[typeof castedKey]["fields"]
+                            ]}
+                          />
+                        ))}
+                      </fieldset>
+                    );
+                  }
 
-              return (
-                <FormField
-                  key={`settings-item-${key}`}
-                  id={key}
-                  value={formValues[key]}
-                  checked={Boolean(formValues[key])}
-                  onChange={handleChange(key)}
-                  {...SettingFieldProps[key as SettingFieldKey]}
-                />
-              );
-            })}
-        </form>
+                  return (
+                    <FormField
+                      key={`settings-item-${key}`}
+                      id={key}
+                      value={formValues[key]}
+                      checked={Boolean(formValues[key])}
+                      onChange={handleChange(key)}
+                      {...SettingFieldProps[key as SettingFieldKey]}
+                    />
+                  );
+                })}
+            </form>
+            <button
+              className="btn bordered self-start"
+              onClick={() => setIsDeleting(true)}
+              type="button"
+            >
+              Delete all events
+            </button>
+          </>
+        )}
       </Modal>
     </div>
   );

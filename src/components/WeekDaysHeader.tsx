@@ -25,7 +25,7 @@ export default function WeekDaysHeader({
       <h2 className="sr-only">Weekdays</h2>
       <div
         className={cn(
-          "[--g:_0.5rem]",
+          "[--g:0.25rem] @sm:[--g:.5rem]",
           "grid grid-cols-[1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr_var(--g)_1fr]",
           "justify-items-center items-center py-2 sm:py-3",
           listClassName
@@ -33,8 +33,8 @@ export default function WeekDaysHeader({
       >
         {weekDays.map((day, index) => (
           <Fragment key={day}>
-            <div className="text-sm md:text-base lg:text-lg text-center">
-              <span aria-label={day} className="mx-auto">
+            <div className="text-xs @xs:text-sm @md:text-base @lg:text-lg text-center">
+              <span aria-label={day} className="mx-auto" title={day}>
                 <span>{day.charAt(0)}</span>
                 <span className="hidden sm:inline">{day.charAt(1)}</span>
                 <span className="hidden md:inline">{day.charAt(2)}</span>

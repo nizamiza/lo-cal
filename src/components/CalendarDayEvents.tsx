@@ -53,8 +53,17 @@ export default function CalendarDayEvents({ events }: CalendarDayEventsProps) {
         </li>
       ))}
       {truncatedEventCount > 0 && (
-        <li className="text-[0.375rem] @[3rem]:text-[0.5rem] @xs:text-xs text-center">
-          +{truncatedEventCount} more
+        <li
+          className="text-[0.375rem] @[3rem]:text-[0.5rem] @xs:text-xs text-center"
+          title={`There are ${truncatedEventCount} more events`}
+        >
+          <span className="hidden @[4rem]:inline">+</span>
+          {truncatedEventCount}
+          <span className="hidden @[4rem]:inline"> more</span>
+          <span className="@[4rem]:hidden">
+            {" "}
+            event{truncatedEventCount > 1 && "s"}
+          </span>
         </li>
       )}
     </ol>
