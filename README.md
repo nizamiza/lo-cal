@@ -53,4 +53,4 @@ Website: [lo-cal.fly.dev](https://lo-cal.fly.dev)
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+Read the [LICENSE](LICENSE) file for more information.
