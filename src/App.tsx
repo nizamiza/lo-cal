@@ -1,6 +1,7 @@
 import Calendar from "@/components/Calendar";
 import StatusMessageList from "@/components/StatusMessageList";
 import IntroModal from "@/components/IntroModal";
+import Footer from "@/components/Footer";
 import Preferences from "@/contexts/Preferences";
 import StatusMessages from "@/contexts/StatusMessages";
 
@@ -21,8 +22,10 @@ function App() {
           `}
         >
           <Calendar />
+
           <IntroModal />
         </main>
+        <Footer />
         <StatusMessageList />
       </StatusMessages>
     </Preferences>

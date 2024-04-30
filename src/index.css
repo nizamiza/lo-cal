@@ -197,6 +197,10 @@
 }
 
 @layer components {
+  .link {
+    @apply underline;
+  }
+
   .separator {
     --thickness: 2px;
 
@@ -323,7 +327,7 @@
     @media (min-width: 640px) {
       --offset: 1rem;
       inset: var(--offset);
-      max-width: min(calc(100% - 2 * var(--offset)), 48ch);
+      max-width: min(calc(100% - 2 * var(--offset)), 54ch);
       min-width: 48ch;
       width: fit-content;
       border-bottom-left-radius: var(--br);

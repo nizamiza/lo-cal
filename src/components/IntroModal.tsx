@@ -53,6 +53,11 @@ export default function IntroModal() {
         You can access additional settings by clicking on the gear icon in the
         top right corner.
       </p>
+      <p>
+        The app has handy keyboard shortcuts that you can use to navigate
+        quickly. After you close this dialog, press the "?" key to see the list
+        of available shortcuts.
+      </p>
       <p>That's it! Enjoy using lo-cal! 😊</p>
     </Modal>
   );

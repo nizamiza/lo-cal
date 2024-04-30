@@ -139,6 +139,7 @@ export default function KeyboardShortcuts() {
         <CommandIcon />
       </button>
       <Modal
+        className="text-left"
         title="Keyboard shortcuts"
         open={isOpen}
         onClose={() => setIsOpen(false)}
