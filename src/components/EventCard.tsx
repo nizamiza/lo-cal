@@ -1,4 +1,4 @@
-import { UIEvent } from "react";
+import { UIEvent, useState, useEffect } from "react";
 import FormField from "@/components/FormField";
 import { usePreference } from "@/contexts/Preferences";
 import { useEventModal } from "@/contexts/EventModal";
@@ -16,6 +16,8 @@ type EventCardProps = {
 };
 
 export default function EventCard({ event, onClick }: EventCardProps) {
+  const [isCompleted, setIsCompleted] = useState(event.completed);
+
   const [viewMode] = usePreference("view-mode");
   const { setEvent } = useEventModal();
 
@@ -37,6 +39,10 @@ export default function EventCard({ event, onClick }: EventCardProps) {
     }
   };
 
+  useEffect(() => {
+    setIsCompleted(event.completed);
+  }, [event.completed]);
+
   return (
     <article
       data-id={event.id}
@@ -49,9 +55,9 @@ export default function EventCard({ event, onClick }: EventCardProps) {
       tabIndex={0}
       className={cn(
         viewMode !== "day" && "[--border-width:1px]",
-        "pointer-events-none @[8rem]:pointer-events-auto @[8rem]:cursor-pointer",
+        "pointer-events-none @[9rem]:pointer-events-auto @[9rem]:cursor-pointer",
         "surface bordered [--base-color:var(--bc-cim)] @xs:shadow-md",
-        "grid gap-1 p-0.5 @[8rem]:p-2 @xs:gap-2 @sm:gap-4",
+        "grid gap-1 p-0.5 @[9rem]:p-2 @xs:gap-2 @sm:gap-4",
         "rounded-md @xs:rounded-lg",
         event.completed && "opacity-80"
       )}
@@ -67,9 +73,10 @@ export default function EventCard({ event, onClick }: EventCardProps) {
             aria-label="Completed"
             id={`completed-${event.id}`}
             type="checkbox"
-            checked={event.completed}
+            checked={isCompleted}
             onClick={(e) => e.stopPropagation()}
             onChange={(_, completed) => {
+              setIsCompleted(completed);
               updateEvent({ ...event, completed }, true).then(refreshEvents);
             }}
           />
@@ -84,7 +91,7 @@ export default function EventCard({ event, onClick }: EventCardProps) {
         >
           <span
             className={cn(
-              "inline-block @[8rem]:hidden w-[0.5lh] mr-[0.125rem] mb-[0.125lh]",
+              "inline-block @[9rem]:hidden w-[0.5lh] mr-[0.125rem] mb-[0.125lh]",
               "aspect-square bg-current rounded-full"
             )}
             role="presentation"
@@ -97,7 +104,7 @@ export default function EventCard({ event, onClick }: EventCardProps) {
       </p>
       <footer
         className={cn(
-          "hidden @[8rem]:flex flex-wrap items-center gap-1 text-[0.625rem]",
+          "hidden @[9rem]:flex flex-wrap items-center gap-1 text-[0.625rem]",
           "@xs:text-sm @xs:gap-2 @sm:text-base @sm:gap-4"
         )}
       >
