@@ -6,39 +6,48 @@ import { useNav, DateChangeDirection } from "@/contexts/Nav";
 import { cn } from "@/shared/utils";
 
 const KEYBOARD_SHORTCUTS = {
-  D: {
+  d: {
+    key: "d",
     label: "Switch to day view",
     action: "preference:view-mode:day",
   },
-  W: {
+  w: {
+    key: "w",
     label: "Switch to week view",
     action: "preference:view-mode:week",
   },
-  M: {
+  m: {
+    key: "m",
     label: "Switch to month view",
     action: "preference:view-mode:month",
   },
-  N: {
+  n: {
+    key: "n",
     label: "Add new event",
     action: "nav:add-event",
   },
-  T: {
+  t: {
+    key: "t",
     label: "Go to today",
     action: "nav:today",
   },
   ArrowLeft: {
+    key: "←",
     label: "Navigate to previous date",
     action: "nav:date:previous",
   },
   ArrowRight: {
+    key: "→",
     label: "Navigate to next date",
     action: "nav:date:next",
   },
-  S: {
+  s: {
+    key: "s",
     label: "Open settings",
     action: "nav:settings",
   },
   "?": {
+    key: "?",
     label: "Show keyboard shortcuts",
     action: "help",
   },
@@ -65,9 +74,9 @@ export default function KeyboardShortcuts() {
         return;
       }
 
-      const key = event.key.length === 1 ? event.key.toUpperCase() : event.key;
+      const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
 
-      if (event.ctrlKey && key === "K") {
+      if (event.ctrlKey && key === "k") {
         openSearch();
         return;
       }
@@ -162,25 +171,17 @@ export default function KeyboardShortcuts() {
             "[&>li]:grid [&>li]:grid-cols-[6ch_1fr] [&>li]:gap-4 [&>li]:items-start"
           )}
         >
-          {Object.entries(KEYBOARD_SHORTCUTS).map(
-            ([key, { label, action }]) => (
-              <li key={action}>
-                <strong>
-                  <kbd>
-                    {key.startsWith("Arrow")
-                      ? key === "ArrowLeft"
-                        ? "←"
-                        : "→"
-                      : key}
-                  </kbd>
-                </strong>{" "}
-                {label}
-              </li>
-            )
-          )}
+          {Object.values(KEYBOARD_SHORTCUTS).map(({ key, label, action }) => (
+            <li key={action}>
+              <strong>
+                <kbd>{key}</kbd>
+              </strong>{" "}
+              {label}
+            </li>
+          ))}
           <li>
             <strong>
-              <kbd>Ctrl+K</kbd>
+              <kbd>Ctrl+k</kbd>
             </strong>{" "}
             Open search
           </li>

@@ -29,6 +29,12 @@ export default defineConfig({
             type: "image/png",
             purpose: "maskable",
           },
+          {
+            platform: "macos",
+            src: "/lo-cal-macos.png",
+            sizes: "192x192",
+            type: "image/png",
+          },
         ],
       },
     }),

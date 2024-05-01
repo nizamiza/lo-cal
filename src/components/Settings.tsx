@@ -90,6 +90,30 @@ const SettingFieldProps = {
     label: "Show time",
     disabled: false,
   },
+  "date-time-format-locale": {
+    type: "text",
+    label: "Date time format locale",
+    element: "select",
+    disabled: false,
+    options: Array.from(
+      new Set([
+        navigator.language,
+        "en-US",
+        "en-GB",
+        "de-DE",
+        "fr-FR",
+        "es-ES",
+        "sk-SK",
+        "cs-CZ",
+        "zh-CN",
+        "ja-JP",
+        "ko-KR",
+      ]).values()
+    ).map((locale) => ({
+      value: locale,
+      label: locale,
+    })),
+  },
 } satisfies Record<string, SettingFormFieldProps>;
 
 const NestedSettingFieldProps = {

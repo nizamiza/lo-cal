@@ -9,7 +9,7 @@ export default function StatusMessageList() {
   return (
     <section
       className={cn(
-        "fixed left-[max(1rem,50%)] top-4 right-4 -translate-x-1/2 z-[999]",
+        "fixed left-4 top-4 right-4 z-[999]",
         "grid gap-4 justify-items-center rounded-lg p-2",
         messages.length === 0 && "pointer-events-none"
       )}

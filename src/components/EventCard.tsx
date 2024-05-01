@@ -1,9 +1,13 @@
 import { UIEvent } from "react";
-import { Event as CalendarEvent } from "@/event/types";
-import MapPin from "@/icons/map-pin";
-import LinkIcon from "@/icons/link";
+import FormField from "@/components/FormField";
 import { usePreference } from "@/contexts/Preferences";
 import { useEventModal } from "@/contexts/EventModal";
+import { useEvents } from "@/contexts/Events";
+import { Event as CalendarEvent } from "@/event/types";
+import useUpdateEvent from "@/hooks/useUpdateEvent";
+import useDateTimeFormatter from "@/hooks/useDateTimeFormatter";
+import MapPin from "@/icons/map-pin";
+import LinkIcon from "@/icons/link";
 import { cn } from "@/shared/utils";
 
 type EventCardProps = {
@@ -14,6 +18,13 @@ type EventCardProps = {
 export default function EventCard({ event, onClick }: EventCardProps) {
   const [viewMode] = usePreference("view-mode");
   const { setEvent } = useEventModal();
+
+  const { refreshEvents } = useEvents();
+  const updateEvent = useUpdateEvent();
+
+  const timeFormatter = useDateTimeFormatter({
+    dateStyle: undefined,
+  });
 
   const handleClick = (e: UIEvent) => {
     e.stopPropagation();
@@ -40,26 +51,47 @@ export default function EventCard({ event, onClick }: EventCardProps) {
         viewMode !== "day" && "[--border-width:1px]",
         "pointer-events-none @[8rem]:pointer-events-auto @[8rem]:cursor-pointer",
         "surface bordered [--base-color:var(--bc-cim)] @xs:shadow-md",
-        "grid gap-1 @[8rem]:p-2 @xs:gap-2 @sm:gap-4",
-        "rounded-md @xs:rounded-lg"
+        "grid gap-1 p-0.5 @[8rem]:p-2 @xs:gap-2 @sm:gap-4",
+        "rounded-md @xs:rounded-lg",
+        event.completed && "opacity-80"
       )}
     >
-      <h3
-        className={cn(
-          "text-[0.375rem] @[2rem]:text-[0.5rem] @[4rem]:text-[0.675rem]",
-          "leading-[1] line-clamp-1",
-          "@xs:text-sm @sm:text-base @sm:line-clamp-2"
-        )}
-      >
-        <span
+      <div className="flex items-center gap-2">
+        <div
           className={cn(
-            "inline-block @[8rem]:hidden w-[0.5lh] mr-[0.125rem] mb-[0.125lh]",
-            "aspect-square bg-current rounded-full"
+            "hidden @[15rem]:flex",
+            "text-[0.675rem] @xs:text-sm @sm:text-base"
           )}
-          role="presentation"
-        />
-        {event.summary}
-      </h3>
+        >
+          <FormField
+            aria-label="Completed"
+            id={`completed-${event.id}`}
+            type="checkbox"
+            checked={event.completed}
+            onClick={(e) => e.stopPropagation()}
+            onChange={(_, completed) => {
+              updateEvent({ ...event, completed }, true).then(refreshEvents);
+            }}
+          />
+        </div>
+        <h3
+          className={cn(
+            "text-[0.375rem] @[2rem]:text-[0.5rem] @[4rem]:text-[0.675rem]",
+            "leading-[1] line-clamp-1",
+            "@xs:text-sm @sm:text-base @sm:line-clamp-2",
+            event.completed && "line-through"
+          )}
+        >
+          <span
+            className={cn(
+              "inline-block @[8rem]:hidden w-[0.5lh] mr-[0.125rem] mb-[0.125lh]",
+              "aspect-square bg-current rounded-full"
+            )}
+            role="presentation"
+          />
+          {event.summary}
+        </h3>
+      </div>
       <p className="hidden @xs:line-clamp-1 @sm:line-clamp-2 @md:line-clamp-3">
         {event.description}
       </p>
@@ -70,10 +102,7 @@ export default function EventCard({ event, onClick }: EventCardProps) {
         )}
       >
         <time dateTime={event.start}>
-          {new Date(event.start).toLocaleTimeString("default", {
-            hour: "numeric",
-            minute: "2-digit",
-          })}
+          {timeFormatter.format(new Date(event.start))}
         </time>
         {event.location && (
           <p

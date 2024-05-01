@@ -18,13 +18,14 @@ export default function CalendarDayDateInfo({
       </time>
       <span
         className={cn(
-          "flex flex-row items-center justify-between w-full gap-1 @xs:gap-2"
+          "grid gap-1 items-center justify-items-center w-full @xs:p-0.5",
+          "@[12rem]:grid-cols-[.2fr_1fr_.2fr] grid-cols-[auto_1fr]"
         )}
       >
         <span
           className={cn(
             "text-[0.5rem] @[4rem]:text-[0.675rem] @xs:text-xs @sm:text-sm",
-            "@md:text-base",
+            "@md:text-base justify-self-start",
             isToday && "font-bold"
           )}
           role="presentation"
@@ -33,16 +34,30 @@ export default function CalendarDayDateInfo({
         </span>
         {dayNumber === 1 && (
           <>
-            <span className="date-note hidden sm:inline" role="presentation">
+            <span className="date-note hidden @xs:inline" role="presentation">
+              Start of {date.toLocaleString("default", { month: "short" })}
+            </span>
+            <span
+              className={cn(
+                "date-note hidden justify-self-end @[10rem]:inline",
+                "@[12rem]:justify-self-center @xs:hidden"
+              )}
+              role="presentation"
+            >
               {date.toLocaleString("default", { month: "short" })}
             </span>
-            <span className="date-note sm:hidden" role="presentation">
+            <span
+              className="date-note justify-self-end @[10rem]:hidden"
+              role="presentation"
+            >
               {date.toLocaleString("default", { month: "narrow" })}
             </span>
           </>
         )}
         {isToday && (
-          <span className="date-note hidden @[12rem]:inline">Today</span>
+          <span className="date-note hidden @[12rem]:inline justify-self-end">
+            Today
+          </span>
         )}
       </span>
     </>
