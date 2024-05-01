@@ -9,4 +9,4 @@ export type Event = {
   url?: string;
 };
 
-export type EventCreateInput = Omit<Event, "id" | "completed">;
+export type EventCreateInput = Omit<Event, "id">;

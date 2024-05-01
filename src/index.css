@@ -221,7 +221,7 @@
 
   .date-note {
     --text-alpha: 0.8;
-    @apply text-xs sm:text-sm uppercase font-semibold;
+    @apply text-[0.5rem] @[4rem]:text-xs @[10rem]:text-sm uppercase font-semibold;
   }
 
   .btn {
@@ -340,6 +340,17 @@
     display: grid;
     gap: 0.25rem;
 
+    &:has(input[type="checkbox"]) {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+
+      & label {
+        order: 1;
+        cursor: pointer;
+      }
+    }
+
     & :is(input, textarea, select) {
       --surface-color-mix: white 95%;
 
@@ -365,8 +376,8 @@
 
       &[type="checkbox"] {
         aspect-ratio: 1;
-        width: 2em;
-        height: 2em;
+        width: 1lh;
+        min-height: 0;
         padding: 0;
         margin-block: auto;
         border-width: var(--border-width);

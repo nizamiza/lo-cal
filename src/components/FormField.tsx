@@ -1,9 +1,9 @@
-import { HTMLAttributes, ChangeEvent } from "react";
+import { HTMLAttributes, ChangeEvent, UIEvent, useMemo } from "react";
 import LabelText from "@/components/LabelText";
 import useDateTimeFormatter from "@/hooks/useDateTimeFormatter";
 import Chevron from "@/icons/chevron";
 import CheckIcon from "@/icons/check";
-import { cn } from "@/shared/utils";
+import { cn, isValidDate } from "@/shared/utils";
 
 type InputAttributes = HTMLAttributes<HTMLInputElement>;
 
@@ -15,7 +15,8 @@ export type FormFieldSelectOption = {
 export type FormFieldProps = {
   className?: string;
   element?: "input" | "textarea" | "select";
-  label: string;
+  "aria-label"?: string;
+  label?: string;
   id: string;
   rows?: number;
   placeholder?: string;
@@ -24,6 +25,8 @@ export type FormFieldProps = {
   disabled?: boolean;
   value?: string;
   checked?: boolean;
+  maxLength?: number;
+  onClick?: (event: UIEvent) => void;
   onChange?: (value: string, checked: boolean) => void;
   inputMode?: InputAttributes["inputMode"];
   type?: "text" | "number" | "date" | "datetime-local" | "checkbox" | "search";
@@ -33,6 +36,7 @@ export type FormFieldProps = {
 export default function FormField({
   className,
   element = "input",
+  "aria-label": ariaLabel,
   label,
   id,
   required,
@@ -40,8 +44,10 @@ export default function FormField({
   defaultValue,
   value,
   checked,
+  onClick,
   onChange,
   placeholder,
+  maxLength,
   type = "text",
   inputMode,
   rows = 7,
@@ -49,55 +55,76 @@ export default function FormField({
 }: FormFieldProps) {
   const dateTimeFormatter = useDateTimeFormatter();
 
+  const isDateType = type.startsWith("date");
+
   const handleChange = (event: ChangeEvent) => {
     const target = event.target as HTMLInputElement;
     onChange?.(target.value, target.checked || false);
   };
 
-  const isDateType = type.startsWith("date");
+  const dateValue = useMemo(() => {
+    if (!isDateType) return value;
+
+    let date = new Date(value || "");
+
+    if (!isValidDate(date)) {
+      date = new Date();
+    }
+
+    const offset = date.getTimezoneOffset() * 60000;
+    const correctedDate = new Date(date.getTime() - offset);
+
+    return correctedDate.toISOString().slice(0, 16);
+  }, [isDateType, value]);
+
+  const commonProps = {
+    "aria-label": ariaLabel,
+    id,
+    name: id,
+    required,
+    disabled,
+    defaultValue,
+    value: isDateType ? dateValue : value,
+    onClick,
+    onChange: handleChange,
+  };
 
   return (
     <div className={cn("form-field", className)}>
-      <label htmlFor={id}>
-        <LabelText className="inline-flex items-center gap-2 flex-wrap">
-          {label}
-          {isDateType && value && (
-            <span className="text-xs">
-              ({dateTimeFormatter.format(new Date(value))})
-            </span>
-          )}
-        </LabelText>
-      </label>
+      {label && (
+        <label htmlFor={id}>
+          <LabelText className="inline-flex items-center gap-2 flex-wrap">
+            {label}
+            {isDateType && dateValue && (
+              <span className="text-xs">
+                ({dateTimeFormatter.format(new Date(dateValue))})
+              </span>
+            )}
+          </LabelText>
+        </label>
+      )}
       {element === "input" ? (
         <span className="relative flex">
           <input
-            id={id}
-            name={id}
-            required={required}
-            disabled={disabled}
-            defaultValue={defaultValue}
+            {...commonProps}
             placeholder={placeholder}
             type={type}
             inputMode={inputMode}
-            onChange={handleChange}
-            value={isDateType ? value?.slice(0, 16) : value}
             checked={checked}
+            maxLength={maxLength}
           />
-          {type === "checkbox" && value && (
-            <CheckIcon className="absolute top-1 left-1 pointer-events-none" />
+          {type === "checkbox" && checked && (
+            <CheckIcon
+              className={cn(
+                "absolute w-[1.25em] h-[1.25em] top-[0.15em] left-[0.125em]",
+                "pointer-events-none"
+              )}
+            />
           )}
         </span>
       ) : element === "select" ? (
         <div className="flex items-center relative">
-          <select
-            id={id}
-            name={id}
-            required={required}
-            disabled={disabled}
-            defaultValue={defaultValue}
-            onChange={handleChange}
-            value={value}
-          >
+          <select {...commonProps}>
             {options?.map(({ value, label }) => (
               <option key={value} value={value}>
                 {label}
@@ -110,16 +137,7 @@ export default function FormField({
           />
         </div>
       ) : (
-        <textarea
-          id={id}
-          name={id}
-          required={required}
-          disabled={disabled}
-          defaultValue={defaultValue}
-          rows={rows}
-          onChange={handleChange}
-          value={value}
-        />
+        <textarea {...commonProps} rows={rows} maxLength={maxLength} />
       )}
     </div>
   );

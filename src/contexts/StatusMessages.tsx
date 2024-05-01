@@ -56,7 +56,7 @@ export default function StatusMessagesProvider({
           return state;
       }
     },
-    [],
+    []
   );
 
   const removeMessage = useCallback((index: number) => {

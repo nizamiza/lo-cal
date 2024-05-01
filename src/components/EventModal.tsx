@@ -11,6 +11,7 @@ import useAddEvent from "@/hooks/useAddEvent";
 import useDeleteEvent from "@/hooks/useDeleteEvent";
 import useUpdateEvent from "@/hooks/useUpdateEvent";
 import Trash from "@/icons/trash";
+import { isValidDate } from "@/shared/utils";
 
 type EventModalProps = {
   event?: CalendarEvent | null;
@@ -24,9 +25,15 @@ function getEventDefaultValues(
   lastViewedDate: string,
   event?: CalendarEvent | null
 ): CalendarEventCreateInput {
+  const defaultStartDate = new Date(lastViewedDate);
+
+  defaultStartDate.setHours(8);
+  defaultStartDate.setMinutes(0);
+
   return {
+    completed: event?.completed || false,
     summary: event?.summary || "",
-    start: event?.start || lastViewedDate || "",
+    start: event?.start || defaultStartDate.toISOString(),
     end: event?.end || "",
     description: event?.description || "",
     location: event?.location || "",
@@ -52,10 +59,10 @@ export default function EventModal({ event, open, onClose }: EventModalProps) {
   const deleteEvent = useDeleteEvent();
 
   const handleFormFieldChange = (key: keyof CalendarEventCreateInput) => {
-    return (value: string) => {
+    return (value: string, checked: boolean) => {
       setFormValues((prevValues) => ({
         ...prevValues,
-        [key]: value,
+        [key]: value || checked || "",
       }));
     };
   };
@@ -68,7 +75,13 @@ export default function EventModal({ event, open, onClose }: EventModalProps) {
       ...formValues,
     } as CalendarEvent;
 
-    const startDate = new Date(calendarEvent.start);
+    let startDate = new Date(calendarEvent.start);
+
+    if (!isValidDate(startDate)) {
+      startDate = new Date();
+      calendarEvent.start = startDate.toISOString();
+    }
+
     const endDate = new Date(startDate);
 
     endDate.setHours(startDate.getHours() + 0.5);
@@ -158,11 +171,21 @@ export default function EventModal({ event, open, onClose }: EventModalProps) {
       ) : (
         <>
           <form onSubmit={handleSubmit} id={FORM_ID}>
+            {id && (
+              <FormField
+                label="Completed"
+                id="completed"
+                type="checkbox"
+                checked={formValues?.completed}
+                onChange={handleFormFieldChange("completed")}
+              />
+            )}
             <FormField
               label="Summary"
               id="summary"
               placeholder="Event name"
               required
+              maxLength={100}
               value={formValues?.summary}
               onChange={handleFormFieldChange("summary")}
             />
@@ -179,6 +202,7 @@ export default function EventModal({ event, open, onClose }: EventModalProps) {
               label="Description"
               id="description"
               placeholder="Event description"
+              maxLength={2048}
               value={formValues?.description}
               onChange={handleFormFieldChange("description")}
             />
@@ -186,6 +210,7 @@ export default function EventModal({ event, open, onClose }: EventModalProps) {
               label="Location"
               id="location"
               placeholder="Event location"
+              maxLength={200}
               value={formValues?.location}
               onChange={handleFormFieldChange("location")}
             />
@@ -194,6 +219,7 @@ export default function EventModal({ event, open, onClose }: EventModalProps) {
               id="url"
               placeholder="https://example.com"
               inputMode="url"
+              maxLength={2000}
               value={formValues?.url}
               onChange={handleFormFieldChange("url")}
             />

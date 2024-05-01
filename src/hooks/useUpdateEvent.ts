@@ -6,13 +6,16 @@ import { logError } from "@/shared/utils";
 export default function useUpdateEvent() {
   const { addMessage } = useStatusMessages();
 
-  return async (event: Event) => {
+  return async (event: Event, silent = false) => {
     try {
       await updateEvent(event);
-      addMessage({
-        type: "success",
-        content: "Event updated successfully.",
-      });
+
+      if (!silent) {
+        addMessage({
+          type: "success",
+          content: "Event updated successfully.",
+        });
+      }
     } catch (error) {
       logError(error, () => {
         addMessage({

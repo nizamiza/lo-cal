@@ -17,6 +17,7 @@ export type PreferenceMap = {
   "last-viewed-date": string;
   "first-day-of-week": 0 | 1 | 2 | 3 | 4 | 5 | 6;
   "show-time": boolean;
+  "date-time-format-locale": string;
   "date-time-format": Pick<
     Intl.DateTimeFormatOptions,
     "dateStyle" | "timeStyle"
@@ -31,6 +32,7 @@ export const DEFAULT_PREFERENCES: PreferenceMap = {
   "last-viewed-date": new Date().toISOString(),
   "first-day-of-week": 1,
   "show-time": false,
+  "date-time-format-locale": navigator.language,
   "date-time-format": {
     dateStyle: "medium",
     timeStyle: "short",
