@@ -1,7 +1,7 @@
 import { HTMLAttributes } from "react";
 import { cn } from "@/shared/utils";
 
-type SkipToContentButtonProps = HTMLAttributes<HTMLButtonElement>;
+type SkipToContentButtonProps = HTMLAttributes<HTMLButtonElemen>;
 
 export default function SkipToContentButton({
   className,
