@@ -11,6 +11,8 @@ export default function CalendarDayDateInfo({
 }: CalendarDayDateInfoProps) {
   const dayNumber = date.getDate();
 
+  const isStartOfMonth = dayNumber === 1;
+
   return (
     <>
       <time dateTime={date.toISOString()} className="sr-only">
@@ -32,7 +34,7 @@ export default function CalendarDayDateInfo({
         >
           {dayNumber}
         </span>
-        {dayNumber === 1 && (
+        {isStartOfMonth && (
           <>
             <span className="date-note hidden @xs:inline" role="presentation">
               Start of {date.toLocaleString("default", { month: "short" })}
@@ -55,7 +57,12 @@ export default function CalendarDayDateInfo({
           </>
         )}
         {isToday && (
-          <span className="date-note hidden @[12rem]:inline justify-self-end">
+          <span
+            className={cn(
+              "date-note hidden @[12rem]:inline justify-self-end",
+              !isStartOfMonth && "col-span-2"
+            )}
+          >
             Today
           </span>
         )}

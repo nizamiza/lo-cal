@@ -45,7 +45,7 @@ export default function CalendarDay({
       }}
       tabIndex={0}
       className={cn(
-        "surface @container cursor-pointer",
+        "calendar-day surface @container cursor-pointer",
         "[--border-alpha:0.1] dark:[--border-alpha:0.15]",
         "flex flex-col justify-start items-start gap-1 @sm:gap-2 h-full",
         "p-1 sm:p-2 aspect-square rounded-sm sm:rounded-md md:rounded-xl",
