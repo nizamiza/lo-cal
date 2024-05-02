@@ -171,6 +171,10 @@
     @apply text-sm sm:text-base font-semibold;
   }
 
+  a {
+    border-radius: 0.25em;
+  }
+
   button {
     border-radius: 0.75em;
   }
