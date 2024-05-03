@@ -57,6 +57,16 @@
   }
 }
 
+::selection {
+  background-color: var(--bc-cim);
+}
+
+@media (prefers-color-scheme: dark) {
+  ::selection {
+    background-color: var(--bc-cm);
+  }
+}
+
 *,
 *::before,
 *::after {
