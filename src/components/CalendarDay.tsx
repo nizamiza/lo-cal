@@ -53,6 +53,7 @@ export default function CalendarDay({
           ? [
               "[box-shadow:var(--shadow)] [--border-alpha:1]",
               "focus-visible:[box-shadow:var(--shadow),0_0_0.75em_var(--base-color)]",
+              "dark:focus-visible:[box-shadow:0_0_0.75em_var(--base-color)]",
               "dark:shadow-none dark:border-[1.5px] dark:[--border-alpha:0.5]",
             ]
           : ["bordered [--surface-alpha:0.35]"]),
