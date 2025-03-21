@@ -17,7 +17,7 @@ export default function TopNavPanel() {
       <div className="grid">
         <SkipToContentButton
           className={cn(
-            "row-start-1 row-end-2 col-start-1 col-end-2 focus-visible:order-1"
+            "hidden sm:flex row-start-1 row-end-2 col-start-1 col-end-2 focus-visible:order-1"
           )}
         />
         <TodayButton
